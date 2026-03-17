@@ -1,0 +1,25 @@
+{
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "env": {
+    "SANITY_PROJECT_ID": "@sanity_project_id",
+    "SANITY_DATASET": "@sanity_dataset",
+    "SANITY_API_TOKEN": "@sanity_api_token"
+  },
+  "headers": [
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=3600" }
+      ]
+    }
+  ]
+}

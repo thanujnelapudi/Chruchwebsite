@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import WatchLiveView from "@/components/pages/WatchLiveView";
+import { getRecentSermons } from "@/lib/sanity";
+import design from "../../config/design.json";
+
+const recentSermons = await getRecentSermons(6).catch(() => []);
+---
+
+<Layout title="Watch Live" description="Join our Sunday worship service live on YouTube every Sunday at 10:00 AM.">
+  <WatchLiveView
+    channelId={design.youtube.channelId}
+    recentSermons={recentSermons}
+    client:load
+  />
+</Layout>

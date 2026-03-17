@@ -1,0 +1,22 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import EventsView from "@/components/pages/EventsView";
+import { getAllEvents, sanityImage } from "@/lib/sanity";
+
+const raw = await getAllEvents().catch(() => []);
+
+const events = raw.map(e => ({
+  _id: e._id,
+  title: e.title,
+  eventDate: e.eventDate,
+  eventTime: e.eventTime,
+  description: e.description,
+  imageUrl: e.eventImage
+    ? sanityImage(e.eventImage).width(800).url()
+    : null,
+}));
+---
+
+<Layout title="Events" description="Upcoming events, special services, and gatherings.">
+  <EventsView events={events} client:load />
+</Layout>

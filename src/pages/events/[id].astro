@@ -1,0 +1,28 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import EventDetailView from "@/components/pages/EventDetailView";
+import { getAllEvents, getEventById, sanityImage } from "@/lib/sanity";
+
+export async function getStaticPaths() {
+  const events = await getAllEvents().catch(() => []);
+  return events.map(e => ({ params: { id: e._id } }));
+}
+
+const { id } = Astro.params;
+const raw = await getEventById(id).catch(() => null);
+
+const event = raw ? {
+  _id: raw._id,
+  title: raw.title,
+  eventDate: raw.eventDate,
+  eventTime: raw.eventTime,
+  description: raw.description,
+  imageUrl: raw.eventImage
+    ? sanityImage(raw.eventImage).width(1200).url()
+    : null,
+} : null;
+---
+
+<Layout title={event?.title ?? "Event"} description={event?.description ?? "Event details"}>
+  <EventDetailView event={event} client:load />
+</Layout>

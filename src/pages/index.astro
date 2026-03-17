@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import HomePageClient from "@/components/pages/HomePageClient";
+import { getRecentSermons, getUpcomingEvents, getRecentSongs, sanityImage, getTodayVerse } from "@/lib/sanity";
+
+const [sermons, eventsRaw, songs, dailyVerse] = await Promise.all([
+  getRecentSermons(1).catch(() => []),
+  getUpcomingEvents(3).catch(() => []),
+  getRecentSongs(3).catch(() => []),
+  getTodayVerse().catch(() => null),
+]);
+
+const latestSermon = sermons[0] ?? null;
+
+// Pre-resolve Sanity image refs → plain URL strings (can't pass refs to client)
+const events = eventsRaw.map(e => ({
+  _id: e._id,
+  title: e.title,
+  eventDate: e.eventDate,
+  eventTime: e.eventTime,
+  description: e.description,
+  eventImageUrl: e.eventImage
+    ? sanityImage(e.eventImage).width(600).url()
+    : null,
+}));
+
+const songsForClient = songs.map(s => ({
+  _id: s._id,
+  songTitle: s.title,
+  artist: s.artist,
+}));
+---
+
+<Layout>
+  <HomePageClient
+    latestSermon={latestSermon}
+    events={events}
+    songs={songsForClient}
+    dailyVerse={dailyVerse}
+    client:load
+  />
+</Layout>
+

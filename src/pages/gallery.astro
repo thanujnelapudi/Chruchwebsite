@@ -1,0 +1,22 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import GalleryView from "@/components/pages/GalleryView";
+import { getGallery, sanityImage } from "@/lib/sanity";
+
+const raw = await getGallery().catch(() => []);
+
+const images = raw.map(item => ({
+  _id: item._id,
+  title: item.title,
+  category: item.category,
+  caption: item.caption,
+  dateTaken: item.dateTaken,
+  imageUrl: item.image
+    ? sanityImage(item.image).width(800).height(800).fit("crop").url()
+    : null,
+}));
+---
+
+<Layout title="Gallery" description="Photos from worship services, events, and community gatherings.">
+  <GalleryView images={images} client:load />
+</Layout>

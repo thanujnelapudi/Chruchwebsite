@@ -1,0 +1,68 @@
+{
+  "_comment": "Central design config. Update image paths here to change visuals site-wide.",
+
+  "brand": {
+    "name": "The Pillar of Fire Ministries",
+    "shortName": "TPCT",
+    "tagline": "The Lord went before them by day in a pillar of cloud.",
+    "taglineReference": "Exodus 13:21",
+    "email": "thepillarofcloudtabernacle@gmail.com",
+    "phone": "(555) 123-4567",
+    "whatsapp": "+15551234567",
+    "address": {
+      "line1": "The Pillar of Cloud Tabernacle",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "zip": "500040",
+      "country": "India"
+    }
+  },
+
+  "youtube": {
+    "channelId": "UCxxxxxxxxxxxxxxxxxxxxxx",
+    "liveStreamUrl": "https://www.youtube.com/embed/live_stream?channel=UCxxxxxxxxxxxxxxxxxxxxxx",
+    "channelUrl": "https://www.youtube.com/@PCT"
+  },
+
+  "logo": {
+    "light": "/images/logo-light.png",
+    "dark": "/images/logo-dark.png",
+    "icon": "/icons/favicon.png",
+    "alt": "The Pillar of Cloud Tabernacle logo"
+  },
+
+  "backgrounds": {
+    "hero": "https://static.wixstatic.com/media/9e129b_7c1BVTrB47erypG3tevi1U9Fv6BbNUBEiuiX~mv2.png",
+    "heroFallback": "https://static.wixstatic.com/media/9e129b_7c1BVTrB47erypG3tevi1U9Fv6BbNUBEiuiX~mv2.png",
+    "cta": "https://static.wixstatic.com/media/9e129b_21BVTrB47erypG3tevi1U9Fv6BbNUBEiuiX~mv2.png",
+    "about": "https://static.wixstatic.com/media/9e129b_7c295e41d6a9481b8d26aeb48cffc7af~mv2.png",
+    "sermon": "https://static.wixstatic.com/media/9e129b_dfb0a88c94a44f3daa971f91b4fd0476~mv2.png",
+    "watchLive": "https://static.wixstatic.com/media/9e129b_dfb0a88c94a44f3daa971f91b4fd0476~mv2.png"
+  },
+
+  "placeholders": {
+    "sermon": "/images/sermon-placeholder.jpg",
+    "event": "/images/event-placeholder.jpg",
+    "leader": "/images/leader-placeholder.jpg",
+    "gallery": "/images/gallery-placeholder.jpg"
+  },
+
+  "dailyVerse": {
+    "text": "\"The Lord is my shepherd; I shall not want.\"",
+    "reference": "Psalm 23:1",
+    "fallbackImages": []
+  },
+
+  "colors": {
+    "primary": "#1E3A8A",
+    "secondary": "#D62828",
+    "highlight": "#F4C430",
+    "background": "#FFFFFF",
+    "foreground": "#1E3A8A"
+  },
+
+  "services": {
+    "sunday": { "day": "Sunday", "time": "10:00 AM" },
+    "bibleStudy": { "day": "Wednesday", "time": "7:00 PM" }
+  }
+}

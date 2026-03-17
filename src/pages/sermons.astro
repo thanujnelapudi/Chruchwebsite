@@ -1,0 +1,15 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SermonsView from "@/components/pages/SermonsView";
+import { getSermons, getSermonTopics, getSermonSeries } from "@/lib/sanity";
+
+const [sermons, topics, allSeries] = await Promise.all([
+  getSermons().catch(() => []),
+  getSermonTopics().catch(() => []),
+  getSermonSeries().catch(() => []),
+]);
+---
+
+<Layout title="Sermons" description="Browse our full sermon archive. Watch messages and download sermon notes.">
+  <SermonsView sermons={sermons} topics={topics} allSeries={allSeries} client:load />
+</Layout>

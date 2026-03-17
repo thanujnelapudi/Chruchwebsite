@@ -1,0 +1,77 @@
+---
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import "@/styles/global.css";
+import design from "../../config/design.json";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "A Spirit-filled church in Hyderabad dedicated to worship, prayer, and proclaiming God's Word.",
+  image = "/images/og-default.jpg",
+  noindex = false,
+} = Astro.props;
+
+const siteTitle = design.brand.name;
+const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
+---
+
+<html lang="en" class="w-full h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={Astro.url.href} />
+
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={image} />
+    <meta property="og:url"         content={Astro.url.href} />
+    <meta property="og:site_name"   content={siteTitle} />
+
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={image} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="icon"             type="image/png" href="/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1E3A8A" />
+
+    <!-- Apply saved dark mode BEFORE paint to prevent flash -->
+    <script is:inline>
+      (function () {
+        var s = localStorage.getItem("pct-theme");
+        var d = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (s === "dark" || (!s && d)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+
+  <body class="w-full min-h-full bg-background dark:bg-slate-900 text-foreground dark:text-slate-100">
+    <!-- Fixed header -->
+    <Header client:load />
+
+    <!-- pt-20 compensates for the 80px fixed header so content is never hidden under it -->
+    <div class="pt-20">
+      <slot />
+    </div>
+
+    <Footer client:load />
+  </body>
+</html>

@@ -1,0 +1,74 @@
+@import './fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Dark mode overrides ──────────────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  html {
+    transition: background-color 0.2s ease, color 0.2s ease;
+    scroll-padding-top: 80px;
+  }
+
+  html, body, #root {
+    min-height: 100vh;
+  }
+
+  .dark body {
+    background-color: #0f172a;
+    color: #e2e8f0;
+  }
+
+  .dark .bg-white {
+    background-color: #1e293b !important;
+  }
+
+  .dark .bg-background {
+    background-color: #0f172a !important;
+  }
+
+  .dark .bg-primary\/5 {
+    background-color: rgba(30, 58, 138, 0.15) !important;
+  }
+
+  .dark .border-primary\/10 {
+    border-color: rgba(148, 163, 184, 0.15) !important;
+  }
+
+  .dark .text-primary {
+    color: #93c5fd !important;
+  }
+
+  .dark .text-foreground {
+    color: #e2e8f0 !important;
+  }
+
+  .dark .text-foreground\/80 { color: rgba(226, 232, 240, 0.8) !important; }
+  .dark .text-foreground\/70 { color: rgba(226, 232, 240, 0.7) !important; }
+  .dark .text-foreground\/60 { color: rgba(226, 232, 240, 0.6) !important; }
+  .dark .text-foreground\/50 { color: rgba(226, 232, 240, 0.5) !important; }
+}
+
+/* ── Telugu / Unicode text rendering ─────────────────────────────────────── */
+pre, .lyrics-text, [lang="te"] {
+  font-family: "Noto Sans Telugu", "Open Sans", system-ui, sans-serif;
+  unicode-bidi: plaintext;
+  white-space: pre-wrap;
+  line-height: 1.8;
+}
+
+/* ── Selection colour ─────────────────────────────────────────────────────── */
+::selection {
+  background-color: #F4C430;
+  color: #1E3A8A;
+}

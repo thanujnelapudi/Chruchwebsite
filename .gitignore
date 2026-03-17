@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Misc
+.DS_Store
+out
+
+# Build output & generated types
+dist
+.astro/
+.vercel/
+
+# Wix (no longer used — safe to delete these if they still exist)
+.wix
+.template-config.json
+photo-theme.txt
+framewire.js
+vite-error-overlay-plugin.js
+wix.config.json
+
+# Dependencies
+node_modules
+
+# Environment variables — NEVER commit these
+.env
+.env.production
+.env.local
+
+# JetBrains
+.idea/
+.messages.json
+
+# Yarn Berry
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

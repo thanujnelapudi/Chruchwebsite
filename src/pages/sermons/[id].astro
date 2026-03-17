@@ -1,0 +1,188 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getSermonById, getSermons, sanityImage } from "@/lib/sanity";
+import { PDFViewerModal } from "@/components/islands/PDFViewerModal";
+import { ArrowLeft, Calendar, User, Tag, BookOpen, Play, Download } from "lucide-react";
+
+export async function getStaticPaths() {
+  const sermons = await getSermons();
+  return sermons.map((s) => ({ params: { id: s._id } }));
+}
+
+const { id } = Astro.params;
+const sermon = await getSermonById(id);
+
+if (!sermon) {
+  return Astro.redirect("/sermons", 301);
+}
+
+const thumbnailUrl = sermon.thumbnailImage
+  ? sanityImage(sermon.thumbnailImage).width(1200).url()
+  : sermon.youtubeVideoId
+  ? `https://img.youtube.com/vi/${sermon.youtubeVideoId}/maxresdefault.jpg`
+  : undefined;
+
+const formattedDate = sermon.date
+  ? new Date(sermon.date).toLocaleDateString("en-IN", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : null;
+---
+
+<Layout
+  title={sermon.title}
+  description={sermon.description ?? `${sermon.title} — ${sermon.speaker}`}
+  image={thumbnailUrl}
+>
+  <div class="min-h-screen bg-background dark:bg-slate-900 pt-24">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+      <!-- Back link -->
+      <a
+        href="/sermons"
+        class="inline-flex items-center gap-2 font-paragraph text-sm text-primary/70 dark:text-white/60 hover:text-primary dark:hover:text-white transition-colors mb-10"
+      >
+        <ArrowLeft class="w-4 h-4" />
+        Back to Sermons
+      </a>
+
+      <!-- Metadata header -->
+      <div class="mb-10">
+        {sermon.series && (
+          <p class="font-paragraph text-sm text-secondary uppercase tracking-widest mb-4">
+            {sermon.series}
+            {sermon.seriesPart ? ` — Part ${sermon.seriesPart}` : ""}
+          </p>
+        )}
+        <h1 class="font-heading text-4xl md:text-5xl text-primary dark:text-blue-300 mb-6">
+          {sermon.title}
+        </h1>
+        <div class="flex flex-wrap gap-6 text-foreground/60 dark:text-white/50 font-paragraph text-sm">
+          {sermon.speaker && (
+            <span class="flex items-center gap-2">
+              <User class="w-4 h-4" />
+              {sermon.speaker}
+            </span>
+          )}
+          {formattedDate && (
+            <span class="flex items-center gap-2">
+              <Calendar class="w-4 h-4" />
+              {formattedDate}
+            </span>
+          )}
+          {sermon.topic && (
+            <span class="flex items-center gap-2">
+              <Tag class="w-4 h-4" />
+              {sermon.topic}
+            </span>
+          )}
+        </div>
+        {sermon.tags && sermon.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {sermon.tags.map((tag) => (
+              <span class="font-paragraph text-xs px-2.5 py-1 bg-primary/8 dark:bg-white/10 text-primary/80 dark:text-white/70">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- YouTube embed -->
+      {sermon.youtubeVideoId && (
+        <div class="aspect-video bg-black mb-8 w-full">
+          <iframe
+            width="100%"
+            height="100%"
+            src={`https://www.youtube.com/embed/${sermon.youtubeVideoId}?rel=0`}
+            title={sermon.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            class="w-full h-full border-0"
+            loading="lazy"
+          ></iframe>
+        </div>
+      )}
+
+      <!-- Sermon notes bar -->
+      {sermon.pdfUrl && (
+        <div class="flex flex-col sm:flex-row gap-4 p-6 bg-primary/5 dark:bg-white/5 border border-primary/10 dark:border-white/10 mb-10">
+          <div class="flex items-center gap-3 flex-1">
+            <BookOpen class="w-6 h-6 text-primary dark:text-blue-300 flex-shrink-0" />
+            <div>
+              <p class="font-heading text-lg text-primary dark:text-blue-300">Sermon Notes</p>
+              <p class="font-paragraph text-sm text-foreground/60 dark:text-white/50">
+                Download or read the sermon notes PDF
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <!-- View notes — opens PDFViewerModal island -->
+            <button
+              id="view-notes-btn"
+              data-pdf-url={sermon.pdfUrl}
+              data-pdf-title={sermon.title}
+              class="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white font-paragraph text-sm transition-colors"
+            >
+              <BookOpen class="w-4 h-4" />
+              View Notes
+            </button>
+            <a
+              href={sermon.pdfUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 px-6 py-3 border border-primary/30 dark:border-white/20 text-primary dark:text-white hover:bg-primary hover:text-white hover:border-primary font-paragraph text-sm transition-colors"
+            >
+              <Download class="w-4 h-4" />
+              Download
+            </a>
+          </div>
+        </div>
+      )}
+
+      <!-- Description -->
+      {sermon.description && (
+        <div class="prose prose-lg max-w-none">
+          <p class="font-paragraph text-lg text-foreground/80 dark:text-white/70 leading-relaxed">
+            {sermon.description}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- PDF viewer mount point — activated by button click -->
+  {sermon.pdfUrl && (
+    <div id="pdf-viewer-mount"></div>
+    <script define:vars={{ pdfUrl: sermon.pdfUrl, pdfTitle: sermon.title }}>
+      const btn = document.getElementById("view-notes-btn");
+      if (btn) {
+        btn.addEventListener("click", async () => {
+          const { createRoot } = await import("react-dom/client");
+          const { createElement: h } = await import("react");
+          const { PDFViewerModal } = await import("@/components/islands/PDFViewerModal");
+
+          const mount = document.getElementById("pdf-viewer-mount");
+          if (!mount) return;
+
+          const root = createRoot(mount);
+          function render(open) {
+            root.render(
+              open
+                ? h(PDFViewerModal, {
+                    url: pdfUrl,
+                    title: pdfTitle,
+                    onClose: () => render(false),
+                  })
+                : null
+            );
+          }
+          render(true);
+        });
+      }
+    </script>
+  )}
+</Layout>

@@ -1,0 +1,11 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ServiceScheduleView from "@/components/pages/ServiceScheduleView";
+import { getServiceSchedule } from "@/lib/sanity";
+
+const services = await getServiceSchedule().catch(() => []);
+---
+
+<Layout title="Service Schedule" description="Join us for worship, prayer, and fellowship throughout the week.">
+  <ServiceScheduleView services={services} client:load />
+</Layout>

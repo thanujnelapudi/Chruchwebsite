@@ -1,0 +1,30 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import AboutView from "@/components/pages/AboutView";
+import { getLeadershipTeam, sanityImage } from "@/lib/sanity";
+
+const rawLeaders = await getLeadershipTeam().catch(() => []);
+
+const leaders = rawLeaders.map(l => ({
+  _id: l._id,
+  name: l.name,
+  role: l.role,
+  biography: l.biography,
+  email: l.email,
+  profilePhotoUrl: l.profilePhoto
+    ? sanityImage(l.profilePhoto).width(256).height(256).fit("crop").url()
+    : null,
+}));
+
+const missionImage = "https://static.wixstatic.com/media/9e129b_7c295e41d6a9481b8d26aeb48cffc7af~mv2.png";
+const visionImage  = "https://static.wixstatic.com/media/9e129b_58331803e5ed4d399201511a4b6c6877~mv2.png";
+---
+
+<Layout title="About Us" description="Discover the mission, vision, and leadership of The Pillar of Cloud Tabernacle.">
+  <AboutView
+    leaders={leaders}
+    missionImage={missionImage}
+    visionImage={visionImage}
+    client:load
+  />
+</Layout>

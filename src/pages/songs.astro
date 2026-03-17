@@ -1,0 +1,11 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SongsView from "@/components/pages/SongsView";
+import { getSongs } from "@/lib/sanity";
+
+const songs = await getSongs().catch(() => []);
+---
+
+<Layout title="Worship Songs" description="Browse and search our full worship song collection. Telugu and English lyrics.">
+  <SongsView songs={songs} client:load />
+</Layout>
