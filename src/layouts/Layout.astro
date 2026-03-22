@@ -14,13 +14,13 @@ interface Props {
 
 const {
   title,
-  description = "A Spirit-filled church in Hyderabad dedicated to worship, prayer, and proclaiming God's Word.",
+  description = "The Pillar of Cloud Tabernacle — End Time Message Church in Hyderabad, India. A Spirit-filled congregation under Pastor K. Andrew. Join us for Sunday worship at 10:00 AM. Watch live on YouTube.",
   image = "/images/og-default.jpg",
   noindex = false,
 } = Astro.props;
 
 const siteTitle = design.brand.name;
-const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
+const fullTitle  = title ? `${title} | ${siteTitle}` : "The Pillar of Cloud Tabernacle | End Time Message Church Hyderabad";
 ---
 
 <html lang="en" class="w-full h-full">
@@ -87,21 +87,36 @@ const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
     {Astro.url.pathname === '/' && (
       <script type="application/ld+json" is:inline set:html={JSON.stringify({
         "@context": "https://schema.org",
-        "@type": ["Church", "LocalBusiness"],
-        "name": "The Pillar of Fire Ministries",
-        "alternateName": "The Pillar Of Cloud Tabernacle",
-        "founder": {
-          "@type": "Person",
-          "name": "Pastor K. Andrew"
-        },
+        "@type": "Church",
+        "name": "The Pillar of Cloud Tabernacle",
+        "alternateName": "The Pillar of Fire Ministries",
+        "description": "End Time Message Church in Hyderabad, India. A Spirit-filled congregation following the teachings of the end time message. Located in Moula Ali, Hyderabad, Telangana.",
+        "url": "https://thepillaroffiresministries.vercel.app",
+        "telephone": "",
+        "email": "thepillarofcloudtabernacle@gmail.com",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "5-13-123, Indira Nagar, H.B Colony, Moula Ali",
+          "streetAddress": "Moula Ali",
           "addressLocality": "Hyderabad",
           "addressRegion": "Telangana",
           "postalCode": "500040",
           "addressCountry": "IN"
-        }
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "17.4239",
+          "longitude": "78.5671"
+        },
+        "openingHours": [
+          "Su 10:00-12:00",
+          "We 19:00-20:00",
+          "Fr 10:30-12:00",
+          "Fr 19:00-20:30"
+        ],
+        "sameAs": [
+          "https://www.youtube.com/@PastorK.Andrew"
+        ],
+        "keywords": "End Time Message Church Hyderabad, Pillar of Cloud Tabernacle, Pillar of Fire Ministries, Pastor K Andrew, Message Church India, William Branham Message Church Hyderabad, Moula Ali Church"
       })} />
     )}
   </body>
