@@ -2,7 +2,7 @@
   "_comment": "Central design config. Update image paths here to change visuals site-wide.",
 
   "brand": {
-    "name": "The Pillar of Fire Ministries",
+    "name": "The Pillar Of Cloud Tabernacle",
     "shortName": "TPCT",
     "tagline": "The Lord went before them by day in a pillar of cloud.",
     "taglineReference": "Exodus 13:21",
@@ -10,7 +10,7 @@
     "phone": "(555) 123-4567",
     "whatsapp": "+15551234567",
     "address": {
-      "line1": "The Pillar of Fire Ministries",
+      "line1": "The Pillar of Cloud Tabernacle",
       "city": "Hyderabad",
       "state": "Telangana",
       "zip": "500040",
@@ -28,7 +28,7 @@
     "light": "/images/logo-light.png",
     "dark": "/images/logo-dark.png",
     "icon": "/icons/favicon.png",
-    "alt": "The Pillar of Fire Ministries logo"
+    "alt": "The Pillar of Cloud Tabernacle logo"
   },
 
   "backgrounds": {

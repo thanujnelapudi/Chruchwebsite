@@ -108,7 +108,7 @@ export default function ContactView() {
                   <div>
                     <h3 className="font-heading text-lg md:text-xl text-[#FDFBF7] tracking-wide mb-2 font-light">Address</h3>
                     <p className="font-paragraph text-[15px] md:text-lg text-[#FDFBF7]/70 leading-relaxed font-light tracking-wide">
-                      The Pillar of Fire Ministries<br />
+                      The Pillar Of Cloud Tabernacle<br />
                       5-13-123, Indira Nagar,H.B Colony,Moula Ali<br />
                       Hyderabad, Telangana, 500040<br />
                       India

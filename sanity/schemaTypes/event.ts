@@ -28,7 +28,7 @@ export const event = defineType({
       title: "Location",
       type: "string",
       description: 'Where the event will be held',
-      initialValue: "The Pillar of Fire Ministries",
+      initialValue: "The Pillar of Cloud Tabernacle",
     }),
     defineField({
       name: "description",
