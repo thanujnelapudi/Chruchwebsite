@@ -29,6 +29,7 @@ const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content="The Pillar of Fire Ministries, the Church in Hyderabad, End Time Message Church Hyderabad, Moula Ali, Pillar of Cloud Tabernacle, End Time Church" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={Astro.url.href} />
 
@@ -60,6 +61,15 @@ const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
         <link rel="preload" as="video" href="/videos/hero-clouds.mp4" type="video/mp4" />
       </>
     )}
+
+    {/* Google Analytics (Replace G-YOUR_MEASUREMENT_ID with actual ID) */}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_MEASUREMENT_ID"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YOUR_MEASUREMENT_ID');
+    </script>
   </head>
 
   <body class="w-full min-h-full bg-background text-foreground">
@@ -72,5 +82,27 @@ const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
 
     <Footer client:load />
     <Analytics />
+
+    {/* Invisible JSON-LD Structured Data for Google SEO */}
+    {Astro.url.pathname === '/' && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": ["Church", "LocalBusiness"],
+        "name": "The Pillar of Fire Ministries",
+        "alternateName": "The Pillar Of Cloud Tabernacle",
+        "founder": {
+          "@type": "Person",
+          "name": "Pastor K. Andrew"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "5-13-123, Indira Nagar, H.B Colony, Moula Ali",
+          "addressLocality": "Hyderabad",
+          "addressRegion": "Telangana",
+          "postalCode": "500040",
+          "addressCountry": "IN"
+        }
+      })} />
+    )}
   </body>
 </html>
