@@ -3,11 +3,6 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "env": {
-    "SANITY_PROJECT_ID": "@sanity_project_id",
-    "SANITY_DATASET": "@sanity_dataset",
-    "SANITY_API_TOKEN": "@sanity_api_token"
-  },
   "headers": [
     {
       "source": "/fonts/(.*)",

@@ -28,7 +28,19 @@ const songsForClient = songs.map(s => ({
   _id: s._id,
   songTitle: s.title,
   artist: s.artist,
+  audioLink: s.audioLink,
 }));
+
+// Pre-resolve Daily Verse image to a URL string
+const dailyVerseForClient = dailyVerse ? {
+  _id: dailyVerse._id,
+  date: dailyVerse.date,
+  verseText: dailyVerse.verseText,
+  verseReference: dailyVerse.verseReference,
+  verseImageUrl: dailyVerse.verseImage 
+    ? sanityImage(dailyVerse.verseImage).width(800).url() 
+    : null,
+} : null;
 ---
 
 <Layout>
@@ -36,7 +48,7 @@ const songsForClient = songs.map(s => ({
     latestSermon={latestSermon}
     events={events}
     songs={songsForClient}
-    dailyVerse={dailyVerse}
+    dailyVerse={dailyVerseForClient}
     client:load
   />
 </Layout>

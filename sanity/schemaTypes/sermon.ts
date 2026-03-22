@@ -12,16 +12,24 @@ export const sermon = defineType({
       validation: (Rule) => Rule.required().min(3).max(120),
     }),
     defineField({
-      name: "speaker",
-      title: "Speaker",
+      name: "category",
+      title: "Sermon Category",
       type: "string",
-      validation: (Rule) => Rule.required(),
       options: {
         list: [
-          { title: "Senior Pastor", value: "Senior Pastor" },
-          { title: "Guest Speaker", value: "Guest Speaker" },
+          { title: "Sunday Sermons", value: "Sunday Sermons" },
+          { title: "Wednesday Sermons", value: "Wednesday Sermons" },
+          { title: "Youth Meeting", value: "Youth Meeting" }
         ],
-      },
+        layout: "radio"
+      }
+    }),
+    defineField({
+      name: "speaker",
+      title: "Speaker Name",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      description: "Enter the full name of the speaker",
     }),
     defineField({
       name: "date",
@@ -77,15 +85,15 @@ export const sermon = defineType({
     }),
     defineField({
       name: "youtubeVideoId",
-      title: "YouTube Video ID",
+      title: "YouTube Video ID or Link",
       type: "string",
-      description:
-        "The ID from the YouTube URL. For https://youtube.com/watch?v=dQw4w9WgXcQ, enter: dQw4w9WgXcQ",
+      description: "Paste the YouTube Video ID (e.g. dQw4w9WgXcQ) OR the full URL.",
       validation: (Rule) =>
         Rule.custom((value) => {
           if (!value) return true;
           if (/^[a-zA-Z0-9_-]{11}$/.test(value)) return true;
-          return "YouTube Video IDs are exactly 11 characters (letters, numbers, _ and -)";
+          if (value.includes('youtube.com') || value.includes('youtu.be')) return true;
+          return "Please enter a valid YouTube Video ID or a valid YouTube URL";
         }),
     }),
     defineField({
@@ -96,15 +104,6 @@ export const sermon = defineType({
         "Paste the public URL from Cloudflare R2 after uploading the PDF",
       validation: (Rule) =>
         Rule.uri({ allowRelative: false, scheme: ["https"] }),
-    }),
-    defineField({
-      name: "thumbnailImage",
-      title: "Thumbnail Image",
-      type: "image",
-      description: "Cover image shown in sermon listings",
-      options: {
-        hotspot: true,
-      },
     }),
     defineField({
       name: "description",
@@ -119,13 +118,11 @@ export const sermon = defineType({
       title: "title",
       speaker: "speaker",
       date: "date",
-      media: "thumbnailImage",
     },
-    prepare({ title, speaker, date, media }) {
+    prepare({ title, speaker, date }) {
       return {
         title,
         subtitle: `${speaker ?? "Unknown Speaker"} · ${date ?? "No date"}`,
-        media,
       };
     },
   },

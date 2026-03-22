@@ -11,9 +11,11 @@ import { z } from "zod";
 
 const schema = z.object({
   name: z.string().min(1).max(120),
-  email: z.string().email(),
+  email: z.string().email().optional().or(z.literal('')),
+  phone: z.string().min(1).max(20),
+  location: z.string().min(1).max(200),
   subject: z.string().max(200).optional(),
-  message: z.string().min(10).max(5000),
+  message: z.string().min(5).max(5000),
 });
 
 export const POST: APIRoute = async ({ request }) => {
@@ -24,7 +26,9 @@ export const POST: APIRoute = async ({ request }) => {
     await sanityWriteClient.create({
       _type: "contactMessage",
       name: data.name,
-      email: data.email,
+      email: data.email ?? "",
+      phone: data.phone,
+      location: data.location,
       subject: data.subject ?? "",
       message: data.message,
       dateSubmitted: new Date().toISOString(),

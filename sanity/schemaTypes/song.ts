@@ -13,6 +13,13 @@ export const song = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "isEndtimeSong",
+      title: "Endtime Song",
+      type: "boolean",
+      description: "Toggle this ON to classify this as an Endtime song. It will appear in the Endtime Songs tab.",
+      initialValue: false,
+    }),
+    defineField({
       name: "titleTelugu",
       title: "Song Title (Telugu)",
       type: "string",

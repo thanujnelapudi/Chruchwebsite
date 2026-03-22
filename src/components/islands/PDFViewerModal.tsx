@@ -46,19 +46,19 @@ export function PDFViewerModal({ url, title, onClose }: Props) {
       }}
     >
       <motion.div
-        className="w-full max-w-5xl h-[90vh] bg-white dark:bg-slate-800 flex flex-col shadow-2xl"
+        className="w-full max-w-5xl h-[90vh] bg-white flex flex-col shadow-2xl"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ duration: 0.2 }}
       >
         {/* Header bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-primary/10 dark:border-white/10 flex-shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-primary/10 flex-shrink-0">
           <div className="flex-1 min-w-0 mr-4">
-            <p className="font-paragraph text-xs text-foreground/50 dark:text-white/40 uppercase tracking-wide mb-0.5">
+            <p className="font-paragraph text-xs text-foreground/50 uppercase tracking-wide mb-0.5">
               Sermon Notes
             </p>
-            <h3 className="font-heading text-lg text-primary dark:text-blue-300 truncate">
+            <h3 className="font-heading text-lg text-primary truncate">
               {title}
             </h3>
           </div>
@@ -68,7 +68,7 @@ export function PDFViewerModal({ url, title, onClose }: Props) {
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-paragraph text-sm px-4 py-2 border border-primary/20 dark:border-white/20 text-primary dark:text-white hover:bg-primary hover:text-white hover:border-primary transition-colors"
+              className="flex items-center gap-1.5 font-paragraph text-sm px-4 py-2 border border-primary/20 text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors"
               title="Download PDF"
             >
               <Download className="w-4 h-4" />
@@ -78,7 +78,7 @@ export function PDFViewerModal({ url, title, onClose }: Props) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-paragraph text-sm px-4 py-2 border border-primary/20 dark:border-white/20 text-primary dark:text-white hover:bg-primary hover:text-white hover:border-primary transition-colors"
+              className="flex items-center gap-1.5 font-paragraph text-sm px-4 py-2 border border-primary/20 text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors"
               title="Open in new tab"
             >
               <ExternalLink className="w-4 h-4" />
@@ -86,7 +86,7 @@ export function PDFViewerModal({ url, title, onClose }: Props) {
             </a>
             <button
               onClick={onClose}
-              className="p-2 text-foreground/60 dark:text-white/60 hover:text-primary dark:hover:text-white hover:bg-primary/5 dark:hover:bg-white/5 transition-colors"
+              className="p-2 text-foreground/60 hover:text-primary hover:bg-primary/5 transition-colors"
               aria-label="Close PDF viewer"
             >
               <X className="w-5 h-5" />
@@ -95,7 +95,7 @@ export function PDFViewerModal({ url, title, onClose }: Props) {
         </div>
 
         {/* PDF iframe */}
-        <div className="flex-1 overflow-hidden bg-gray-100 dark:bg-slate-900">
+        <div className="flex-1 overflow-hidden bg-gray-100">
           <iframe
             src={`${url}#toolbar=1&navpanes=0`}
             className="w-full h-full border-0"
@@ -104,15 +104,15 @@ export function PDFViewerModal({ url, title, onClose }: Props) {
         </div>
 
         {/* Mobile fallback footer */}
-        <div className="md:hidden flex-shrink-0 px-6 py-3 border-t border-primary/10 dark:border-white/10 text-center">
-          <p className="font-paragraph text-xs text-foreground/50 dark:text-white/40 mb-2">
+        <div className="md:hidden flex-shrink-0 px-6 py-3 border-t border-primary/10 text-center">
+          <p className="font-paragraph text-xs text-foreground/50 mb-2">
             PDF not displaying? Open or download it directly.
           </p>
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-paragraph text-sm text-primary dark:text-blue-300 underline underline-offset-2"
+            className="font-paragraph text-sm text-primary underline underline-offset-2"
           >
             Open PDF in browser
           </a>

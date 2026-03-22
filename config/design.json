@@ -2,7 +2,7 @@
   "_comment": "Central design config. Update image paths here to change visuals site-wide.",
 
   "brand": {
-    "name": "The Pillar of Fire Ministries",
+    "name": "The Pillar Of Cloud Tabernacle",
     "shortName": "TPCT",
     "tagline": "The Lord went before them by day in a pillar of cloud.",
     "taglineReference": "Exodus 13:21",
@@ -32,12 +32,13 @@
   },
 
   "backgrounds": {
-    "hero": "https://static.wixstatic.com/media/9e129b_7c1BVTrB47erypG3tevi1U9Fv6BbNUBEiuiX~mv2.png",
-    "heroFallback": "https://static.wixstatic.com/media/9e129b_7c1BVTrB47erypG3tevi1U9Fv6BbNUBEiuiX~mv2.png",
-    "cta": "https://static.wixstatic.com/media/9e129b_21BVTrB47erypG3tevi1U9Fv6BbNUBEiuiX~mv2.png",
-    "about": "https://static.wixstatic.com/media/9e129b_7c295e41d6a9481b8d26aeb48cffc7af~mv2.png",
-    "sermon": "https://static.wixstatic.com/media/9e129b_dfb0a88c94a44f3daa971f91b4fd0476~mv2.png",
-    "watchLive": "https://static.wixstatic.com/media/9e129b_dfb0a88c94a44f3daa971f91b4fd0476~mv2.png"
+    "hero": "/videos/hero-clouds.mp4",
+    "heroVideo": "/videos/hero-clouds.mp4",
+    "cta": "/images/cta-bg.jpg",
+    "prayer": "/images/prayer-bg.jpg",
+    "mission": "https://static.wixstatic.com/media/9e129b_7c295e41d6a9481b8d26aeb48cffc7af~mv2.png",
+    "vision": "https://static.wixstatic.com/media/9e129b_58331803e5ed4d399201511a4b6c6877~mv2.png",
+    "sermon": "https://static.wixstatic.com/media/9e129b_dfb0a88c94a44f3daa971f91b4fd0476~mv2.png"
   },
 
   "placeholders": {

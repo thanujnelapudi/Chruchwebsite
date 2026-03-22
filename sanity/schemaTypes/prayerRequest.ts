@@ -9,11 +9,20 @@ export const prayerRequest = defineType({
       name: "submitterName",
       title: "Name",
       type: "string",
-      description: "Hidden if submitted anonymously",
     }),
     defineField({
       name: "submitterEmail",
       title: "Email",
+      type: "string",
+    }),
+    defineField({
+      name: "submitterPhone",
+      title: "Phone",
+      type: "string",
+    }),
+    defineField({
+      name: "submitterPlace",
+      title: "Place",
       type: "string",
     }),
     defineField({
@@ -23,12 +32,7 @@ export const prayerRequest = defineType({
       rows: 6,
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "isAnonymous",
-      title: "Submitted Anonymously",
-      type: "boolean",
-      initialValue: false,
-    }),
+
     defineField({
       name: "dateSubmitted",
       title: "Submitted On",
@@ -47,12 +51,11 @@ export const prayerRequest = defineType({
     select: {
       name: "submitterName",
       text: "prayerRequestText",
-      anon: "isAnonymous",
       date: "dateSubmitted",
     },
-    prepare({ name, text, anon, date }) {
+    prepare({ name, text, date }) {
       return {
-        title: anon ? "Anonymous" : (name ?? "Unknown"),
+        title: name ?? "Unknown",
         subtitle: `${date ? new Date(date).toLocaleDateString() : ""} · ${text?.slice(0, 60) ?? ""}`,
       };
     },

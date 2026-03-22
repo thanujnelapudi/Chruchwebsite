@@ -5,16 +5,26 @@ import { getGallery, sanityImage } from "@/lib/sanity";
 
 const raw = await getGallery().catch(() => []);
 
-const images = raw.map(item => ({
-  _id: item._id,
-  title: item.title,
-  category: item.category,
-  caption: item.caption,
-  dateTaken: item.dateTaken,
-  imageUrl: item.image
-    ? sanityImage(item.image).width(800).height(800).fit("crop").url()
-    : null,
-}));
+const images = [
+  ...raw.map(item => ({
+    _id: item._id,
+    title: item.title,
+    category: item.category,
+    caption: item.caption,
+    dateTaken: item.dateTaken,
+    imageUrl: item.image
+      ? sanityImage(item.image).width(800).height(800).fit("crop").url()
+      : null,
+  })),
+  {
+    _id: "static-1",
+    title: "Church Event",
+    category: "Events",
+    caption: "",
+    dateTaken: new Date().toISOString(),
+    imageUrl: "https://pub-c0ea559d9e3b44439fe9f2006b1ea8bb.r2.dev/Gallery/DSC05375.JPG",
+  }
+];
 ---
 
 <Layout title="Gallery" description="Photos from worship services, events, and community gatherings.">

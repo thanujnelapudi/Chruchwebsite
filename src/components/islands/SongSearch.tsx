@@ -75,22 +75,22 @@ export default function SongSearch({ songs, genres }: Props) {
   return (
     <div>
       {/* ── Search + filter bar ─────────────────────────────────────────── */}
-      <div className="sticky top-[73px] z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-primary/10 dark:border-white/10 py-4 mb-10">
+      <div className="sticky top-[73px] z-40 bg-white/95 backdrop-blur-sm border-b border-primary/10 py-4 mb-10">
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40 dark:text-white/40 pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40 pointer-events-none" />
               <input
                 type="search"
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); setPage(1); }}
                 placeholder="Search songs by title, lyrics, or artist… (Telugu supported)"
-                className="w-full pl-10 pr-10 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm focus:outline-none focus:border-primary dark:focus:border-white/60 focus:ring-1 focus:ring-primary/30"
+                className="w-full pl-10 pr-10 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30"
               />
               {query && (
                 <button
                   onClick={() => { setQuery(""); setPage(1); }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground dark:text-white/40 dark:hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -100,7 +100,7 @@ export default function SongSearch({ songs, genres }: Props) {
             <select
               value={selectedGenre}
               onChange={(e) => { setSelectedGenre(e.target.value); setPage(1); }}
-              className="px-3 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
+              className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
             >
               <option value="">All Genres</option>
               {genres.map((g) => <option key={g} value={g}>{g}</option>)}
@@ -115,7 +115,7 @@ export default function SongSearch({ songs, genres }: Props) {
               </button>
             )}
           </div>
-          <p className="font-paragraph text-xs text-foreground/50 dark:text-white/40 mt-2">
+          <p className="font-paragraph text-xs text-foreground/50 mt-2">
             {filtered.length} song{filtered.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -144,7 +144,7 @@ export default function SongSearch({ songs, genres }: Props) {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: Math.min(index * 0.03, 0.3) }}
-                    className="bg-white dark:bg-slate-800 border border-primary/10 dark:border-white/10 hover:border-primary/25 dark:hover:border-white/25 transition-colors"
+                    className="bg-white border border-primary/10 hover:border-primary/25 transition-colors"
                   >
                     {/* Song header row — always visible */}
                     <div
@@ -156,19 +156,19 @@ export default function SongSearch({ songs, genres }: Props) {
                       aria-expanded={isExpanded}
                     >
                       <div className="flex items-start gap-4 flex-1 min-w-0">
-                        <div className="w-8 h-8 rounded-full bg-primary/8 dark:bg-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Music className="w-3.5 h-3.5 text-primary dark:text-blue-300" />
+                        <div className="w-8 h-8 rounded-full bg-primary/8 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Music className="w-3.5 h-3.5 text-primary" />
                         </div>
                         <div className="min-w-0">
                           <h3
-                            className="font-heading text-lg text-primary dark:text-blue-300 group-hover:text-secondary transition-colors truncate"
+                            className="font-heading text-lg text-primary group-hover:text-secondary transition-colors truncate"
                             style={hasTeluguTitle ? lyricsStyle(song.titleTelugu ?? song.title ?? "") : {}}
                           >
                             {song.title}
                           </h3>
                           {song.titleTelugu && song.titleTelugu !== song.title && (
                             <p
-                              className="font-paragraph text-sm text-foreground/60 dark:text-white/50 mt-0.5"
+                              className="font-paragraph text-sm text-foreground/60 mt-0.5"
                               style={lyricsStyle(song.titleTelugu)}
                             >
                               {song.titleTelugu}
@@ -176,12 +176,12 @@ export default function SongSearch({ songs, genres }: Props) {
                           )}
                           <div className="flex flex-wrap items-center gap-3 mt-1.5">
                             {song.artist && (
-                              <span className="font-paragraph text-xs text-foreground/50 dark:text-white/40">
+                              <span className="font-paragraph text-xs text-foreground/50">
                                 {song.artist}
                               </span>
                             )}
                             {song.genre && (
-                              <span className="font-paragraph text-xs px-2 py-0.5 bg-primary/8 dark:bg-white/10 text-primary/70 dark:text-white/60">
+                              <span className="font-paragraph text-xs px-2 py-0.5 bg-primary/8 text-primary/70">
                                 {song.genre}
                               </span>
                             )}
@@ -196,19 +196,19 @@ export default function SongSearch({ songs, genres }: Props) {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="p-2 text-primary/60 dark:text-white/50 hover:text-secondary transition-colors"
+                            className="p-2 text-primary/60 hover:text-secondary transition-colors"
                             title="Listen to this song"
                           >
                             <Volume2 className="w-4 h-4" />
                           </a>
                         )}
                         {song.lyrics && (
-                          <span className="font-paragraph text-xs text-foreground/50 dark:text-white/40 hidden sm:block">
+                          <span className="font-paragraph text-xs text-foreground/50 hidden sm:block">
                             {isExpanded ? "Hide" : "Show"} lyrics
                           </span>
                         )}
                         {song.lyrics && (
-                          <div className="text-primary/60 dark:text-white/50">
+                          <div className="text-primary/60">
                             {isExpanded
                               ? <ChevronUp className="w-5 h-5" />
                               : <ChevronDown className="w-5 h-5" />
@@ -228,9 +228,9 @@ export default function SongSearch({ songs, genres }: Props) {
                           transition={{ duration: 0.25, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
-                          <div className="px-5 pb-6 pt-2 border-t border-primary/8 dark:border-white/8">
+                          <div className="px-5 pb-6 pt-2 border-t border-primary/8">
                             <pre
-                              className="font-paragraph text-sm text-foreground/80 dark:text-white/70 whitespace-pre-wrap leading-relaxed max-h-[60vh] overflow-y-auto"
+                              className="font-paragraph text-sm text-foreground/80 whitespace-pre-wrap leading-relaxed max-h-[60vh] overflow-y-auto"
                               style={lyricsStyle(song.lyrics)}
                             >
                               {song.lyrics}
@@ -248,7 +248,7 @@ export default function SongSearch({ songs, genres }: Props) {
               <div className="text-center mt-12">
                 <button
                   onClick={() => setPage((p) => p + 1)}
-                  className="inline-flex items-center gap-2 border border-primary/30 dark:border-white/20 text-primary dark:text-white hover:bg-primary hover:text-white font-paragraph text-sm px-10 py-4 transition-colors"
+                  className="inline-flex items-center gap-2 border border-primary/30 text-primary hover:bg-primary hover:text-white font-paragraph text-sm px-10 py-4 transition-colors"
                 >
                   <ChevronDown className="w-4 h-4" />
                   Load more ({filtered.length - paginated.length} remaining)

@@ -2,14 +2,14 @@
 import Layout from "@/layouts/Layout.astro";
 import WatchLiveView from "@/components/pages/WatchLiveView";
 import { getRecentSermons } from "@/lib/sanity";
-import design from "../../config/design.json";
 
 const recentSermons = await getRecentSermons(6).catch(() => []);
+const channelId = import.meta.env.PUBLIC_YOUTUBE_CHANNEL_ID || "UC5KmMLWKSyiGixXGl9J3Z8Q";
 ---
 
 <Layout title="Watch Live" description="Join our Sunday worship service live on YouTube every Sunday at 10:00 AM.">
   <WatchLiveView
-    channelId={design.youtube.channelId}
+    channelId={channelId}
     recentSermons={recentSermons}
     client:load
   />

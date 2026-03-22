@@ -15,7 +15,18 @@ export const contactMessage = defineType({
       name: "email",
       title: "Email",
       type: "string",
-      validation: (Rule) => Rule.required().email(),
+    }),
+    defineField({
+      name: "phone",
+      title: "Phone Number",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "location",
+      title: "Location",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "subject",

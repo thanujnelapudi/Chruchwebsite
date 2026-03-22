@@ -43,3 +43,11 @@ node_modules
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Ignore unused heavy video assets to prevent repo bloat
+public/videos/curtain.mov
+public/videos/6421026-hd_1920_1080_30fps.mp4
+public/videos/hero-clouds1.mp4
+
+.vercel
+.env*.local

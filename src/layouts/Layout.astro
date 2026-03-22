@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "@/styles/global.css";
 import design from "../../config/design.json";
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -46,32 +47,30 @@ const fullTitle  = title ? `${title} | ${siteTitle}` : siteTitle;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script:wght@400;500;600;700&family=Herr+Von+Muellerhoff&display=swap" rel="stylesheet" />
 
     <link rel="icon"             type="image/png" href="/icons/favicon.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <meta name="theme-color" content="#1E3A8A" />
 
-    <!-- Apply saved dark mode BEFORE paint to prevent flash -->
-    <script is:inline>
-      (function () {
-        var s = localStorage.getItem("pct-theme");
-        var d = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (s === "dark" || (!s && d)) {
-          document.documentElement.classList.add("dark");
-        }
-      })();
-    </script>
+    {/* Preload High-Priority Hero Background Assets to Prevent Flicker */}
+    {Astro.url.pathname === '/' && (
+      <>
+        <link rel="preload" as="image" href="https://static.wixstatic.com/media/9e129b_7c11a873db554fe6b146a8648d43d667~mv2.png" />
+        <link rel="preload" as="video" href="/videos/hero-clouds.mp4" type="video/mp4" />
+      </>
+    )}
   </head>
 
-  <body class="w-full min-h-full bg-background dark:bg-slate-900 text-foreground dark:text-slate-100">
+  <body class="w-full min-h-full bg-background text-foreground">
     <!-- Fixed header -->
     <Header client:load />
 
-    <!-- pt-20 compensates for the 80px fixed header so content is never hidden under it -->
-    <div class="pt-20">
+    <main class="w-full flex-grow">
       <slot />
-    </div>
+    </main>
 
     <Footer client:load />
+    <Analytics />
   </body>
 </html>

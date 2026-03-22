@@ -64,8 +64,9 @@ export interface PrayerRequests {
   _updatedDate?: Date | string;
   submitterName?: string;
   submitterEmail?: string;
+  submitterPhone?: string;
+  submitterPlace?: string;
   prayerRequestText?: string;
-  isAnonymous?: boolean;
   dateSubmitted?: Date | string;
 }
 

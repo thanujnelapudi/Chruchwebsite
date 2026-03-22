@@ -63,14 +63,14 @@ export default function GalleryGrid({ items, categories }: Props) {
               className={`font-paragraph text-sm px-5 py-2 transition-colors border ${
                 selectedCategory === cat
                   ? "bg-primary text-white border-primary"
-                  : "border-primary/20 dark:border-white/20 text-foreground/70 dark:text-white/60 hover:border-primary dark:hover:border-white/40 hover:text-primary dark:hover:text-white bg-transparent"
+                  : "border-primary/20 text-foreground/70 hover:border-primary hover:text-primary bg-transparent"
               }`}
             >
               {cat}
             </button>
           ))}
         </div>
-        <p className="font-paragraph text-xs text-foreground/40 dark:text-white/30 mt-3">
+        <p className="font-paragraph text-xs text-foreground/40 mt-3">
           {filtered.length} photo{filtered.length !== 1 ? "s" : ""}
           {selectedCategory !== "All" ? ` in ${selectedCategory}` : ""}
         </p>
@@ -79,7 +79,7 @@ export default function GalleryGrid({ items, categories }: Props) {
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-24 max-w-[100rem] mx-auto">
-          <p className="font-paragraph text-lg text-foreground/50 dark:text-white/40">No photos in this category yet.</p>
+          <p className="font-paragraph text-lg text-foreground/50">No photos in this category yet.</p>
         </div>
       ) : (
         <motion.div
@@ -95,7 +95,7 @@ export default function GalleryGrid({ items, categories }: Props) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="relative aspect-square bg-primary/5 dark:bg-slate-800 overflow-hidden group cursor-pointer"
+                className="relative aspect-square bg-primary/5 overflow-hidden group cursor-pointer"
                 onClick={() => openLightbox(idx)}
                 role="button"
                 tabIndex={0}

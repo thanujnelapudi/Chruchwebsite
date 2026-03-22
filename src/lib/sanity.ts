@@ -43,7 +43,7 @@ const builder = imageUrlBuilder(sanityClient);
  * Usage: sanityImage(post.thumbnailImage).width(800).url()
  */
 export function sanityImage(source: Parameters<typeof builder.image>[0]) {
-  return builder.image(source);
+  return builder.image(source).auto('format').format('webp');
 }
 
 // ─── TypeScript interfaces ────────────────────────────────────────────────────
@@ -55,6 +55,7 @@ export interface Sermon {
   speaker: string;
   date: string;
   topic?: string;
+  category?: string;
   tags?: string[];
   series?: string;
   seriesPart?: number;
@@ -73,6 +74,7 @@ export interface Song {
   genre?: string;
   tags?: string[];
   audioLink?: string;
+  isEndtimeSong?: boolean;
 }
 
 export interface Event {
@@ -143,6 +145,7 @@ const SERMON_FIELDS = `
   title,
   speaker,
   date,
+  category,
   topic,
   tags,
   series,
@@ -161,7 +164,8 @@ const SONG_FIELDS = `
   artist,
   genre,
   tags,
-  audioLink
+  audioLink,
+  isEndtimeSong
 `;
 
 const EVENT_FIELDS = `
@@ -309,13 +313,19 @@ export async function getGallery(limit?: number): Promise<GalleryItem[]> {
 
 // ── Daily Verse ───────────────────────────────────────────────────────────────
 
-/** Fetch today's verse from Sanity. Returns null if none is set for today. */
+/** Fetch today's verse from Sanity. Quotes expire after 3 days, falling back to local storage. */
 export async function getTodayVerse(): Promise<DailyVerse | null> {
-  const today = new Date().toISOString().split("T")[0];
+  const todayDate = new Date();
+  const today = todayDate.toISOString().split("T")[0];
+  
+  const threeDaysAgoDate = new Date(todayDate);
+  threeDaysAgoDate.setDate(todayDate.getDate() - 3);
+  const threeDaysAgo = threeDaysAgoDate.toISOString().split("T")[0];
+
   return sanityClient.fetch(
-    `*[_type == "dailyVerse" && date == $today][0] {
+    `*[_type == "dailyVerse" && date <= $today && date >= $threeDaysAgo] | order(date desc)[0] {
       _id, date, verseText, verseReference, verseImage, language
     }`,
-    { today }
+    { today, threeDaysAgo }
   );
 }

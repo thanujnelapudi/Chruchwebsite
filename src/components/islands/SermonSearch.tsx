@@ -92,23 +92,23 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
   return (
     <>
       {/* ── Search + filter bar ─────────────────────────────────────────── */}
-      <div className="sticky top-[73px] z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-primary/10 dark:border-white/10 py-4 mb-10">
+      <div className="sticky top-[73px] z-40 bg-white/95 backdrop-blur-sm border-b border-primary/10 py-4 mb-10">
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="flex flex-col sm:flex-row gap-3">
             {/* Search input */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40 dark:text-white/40 pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40 pointer-events-none" />
               <input
                 type="search"
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); setPage(1); }}
                 placeholder="Search sermons by title, speaker, topic, tags…"
-                className="w-full pl-10 pr-10 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm focus:outline-none focus:border-primary dark:focus:border-white/60 focus:ring-1 focus:ring-primary/30"
+                className="w-full pl-10 pr-10 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30"
               />
               {query && (
                 <button
                   onClick={() => { setQuery(""); setPage(1); }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground dark:text-white/40 dark:hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground"
                   aria-label="Clear search"
                 >
                   <X className="w-4 h-4" />
@@ -122,7 +122,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
               className={`sm:hidden flex items-center gap-2 px-4 py-2.5 border font-paragraph text-sm transition-colors ${
                 showFilters || selectedTopic || selectedSeries
                   ? "border-primary bg-primary text-white"
-                  : "border-primary/20 text-foreground/70 dark:text-white/70"
+                  : "border-primary/20 text-foreground/70"
               }`}
             >
               <Filter className="w-4 h-4" />
@@ -134,7 +134,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
               <select
                 value={selectedTopic}
                 onChange={(e) => { setSelectedTopic(e.target.value); setPage(1); }}
-                className="px-3 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
+                className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
               >
                 <option value="">All Topics</option>
                 {topics.map((t) => (
@@ -145,7 +145,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
               <select
                 value={selectedSeries}
                 onChange={(e) => { setSelectedSeries(e.target.value); setPage(1); }}
-                className="px-3 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
+                className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
               >
                 <option value="">All Series</option>
                 {allSeries.map((s) => (
@@ -170,7 +170,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
               <select
                 value={selectedTopic}
                 onChange={(e) => { setSelectedTopic(e.target.value); setPage(1); }}
-                className="px-3 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm w-full focus:outline-none"
+                className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm w-full focus:outline-none"
               >
                 <option value="">All Topics</option>
                 {topics.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -178,7 +178,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
               <select
                 value={selectedSeries}
                 onChange={(e) => { setSelectedSeries(e.target.value); setPage(1); }}
-                className="px-3 py-2.5 border border-primary/20 dark:border-white/20 bg-white dark:bg-slate-800 text-foreground dark:text-white font-paragraph text-sm w-full focus:outline-none"
+                className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm w-full focus:outline-none"
               >
                 <option value="">All Series</option>
                 {allSeries.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -187,7 +187,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
           )}
 
           {/* Results count */}
-          <p className="font-paragraph text-xs text-foreground/50 dark:text-white/40 mt-2">
+          <p className="font-paragraph text-xs text-foreground/50 mt-2">
             {filtered.length} sermon{filtered.length !== 1 ? "s" : ""}
             {hasActiveFilters ? " matching your filters" : " total"}
           </p>
@@ -222,10 +222,10 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                 <motion.article
                   key={sermon._id}
                   variants={fadeUp}
-                  className="bg-white dark:bg-slate-800 border border-primary/10 dark:border-white/10 hover:border-primary/30 dark:hover:border-white/30 hover:shadow-lg transition-all group flex flex-col"
+                  className="bg-white border border-primary/10 hover:border-primary/30 hover:shadow-lg transition-all group flex flex-col"
                 >
                   {/* Thumbnail / YouTube preview */}
-                  <div className="aspect-video bg-primary/5 dark:bg-slate-700 relative overflow-hidden">
+                  <div className="aspect-video bg-primary/5 relative overflow-hidden">
                     {sermon.youtubeVideoId ? (
                       <img
                         src={`https://img.youtube.com/vi/${sermon.youtubeVideoId}/mqdefault.jpg`}
@@ -264,20 +264,20 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                   <div className="p-6 flex flex-col flex-1">
                     <div className="flex-1">
                       {sermon.date && (
-                        <p className="font-paragraph text-xs text-foreground/50 dark:text-white/40 uppercase tracking-wide mb-2">
+                        <p className="font-paragraph text-xs text-foreground/50 uppercase tracking-wide mb-2">
                           {formatDate(sermon.date)}
                         </p>
                       )}
-                      <h3 className="font-heading text-xl text-primary dark:text-blue-300 mb-2 group-hover:text-secondary transition-colors">
+                      <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
                         {sermon.title}
                       </h3>
                       {sermon.speaker && (
-                        <p className="font-paragraph text-sm text-foreground/70 dark:text-white/60 mb-3">
+                        <p className="font-paragraph text-sm text-foreground/70 mb-3">
                           {sermon.speaker}
                         </p>
                       )}
                       {sermon.description && (
-                        <p className="font-paragraph text-sm text-foreground/60 dark:text-white/50 line-clamp-2 mb-4">
+                        <p className="font-paragraph text-sm text-foreground/60 line-clamp-2 mb-4">
                           {sermon.description}
                         </p>
                       )}
@@ -286,7 +286,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                           {sermon.tags.slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="inline-flex items-center gap-1 font-paragraph text-xs px-2 py-0.5 bg-primary/8 dark:bg-white/10 text-primary/80 dark:text-white/70"
+                              className="inline-flex items-center gap-1 font-paragraph text-xs px-2 py-0.5 bg-primary/8 text-primary/80"
                             >
                               <Tag className="w-3 h-3" />
                               {tag}
@@ -297,7 +297,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                     </div>
 
                     {/* Action buttons */}
-                    <div className="flex gap-2 pt-4 border-t border-primary/10 dark:border-white/10 mt-auto">
+                    <div className="flex gap-2 pt-4 border-t border-primary/10 mt-auto">
                       {sermon.youtubeVideoId && (
                         <a
                           href={`https://www.youtube.com/watch?v=${sermon.youtubeVideoId}`}
@@ -313,7 +313,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                         <>
                           <button
                             onClick={() => { setPdfUrl(sermon.pdfUrl!); setPdfTitle(sermon.title); }}
-                            className="flex-1 flex items-center justify-center gap-2 border border-primary/30 dark:border-white/20 text-primary dark:text-white hover:bg-primary/5 dark:hover:bg-white/5 font-paragraph text-sm py-2.5 px-4 transition-colors"
+                            className="flex-1 flex items-center justify-center gap-2 border border-primary/30 text-primary hover:bg-primary/5 font-paragraph text-sm py-2.5 px-4 transition-colors"
                           >
                             <BookOpen className="w-4 h-4" />
                             Notes
@@ -323,7 +323,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                             download
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center p-2.5 border border-primary/20 dark:border-white/20 text-foreground/60 dark:text-white/50 hover:text-primary dark:hover:text-white hover:border-primary dark:hover:border-white/40 transition-colors"
+                            className="flex items-center justify-center p-2.5 border border-primary/20 text-foreground/60 hover:text-primary hover:border-primary transition-colors"
                             title="Download sermon notes"
                           >
                             <Download className="w-4 h-4" />
@@ -341,7 +341,7 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
               <div className="text-center mt-16">
                 <button
                   onClick={() => setPage((p) => p + 1)}
-                  className="inline-flex items-center gap-2 border border-primary/30 dark:border-white/20 text-primary dark:text-white hover:bg-primary hover:text-white hover:border-primary font-paragraph text-sm px-10 py-4 transition-colors"
+                  className="inline-flex items-center gap-2 border border-primary/30 text-primary hover:bg-primary hover:text-white hover:border-primary font-paragraph text-sm px-10 py-4 transition-colors"
                 >
                   <ChevronDown className="w-4 h-4" />
                   Load more sermons ({filtered.length - paginated.length} remaining)

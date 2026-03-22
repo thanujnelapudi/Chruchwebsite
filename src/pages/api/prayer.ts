@@ -9,10 +9,11 @@ import { sanityWriteClient } from "@/lib/sanity";
 import { z } from "zod";
 
 const schema = z.object({
-  submitterName: z.string().max(120).optional(),
+  submitterName: z.string().min(1).max(120),
   submitterEmail: z.string().email().optional().or(z.literal("")),
+  submitterPhone: z.string().min(5).max(30),
+  submitterPlace: z.string().min(1).max(120),
   prayerRequestText: z.string().min(5).max(5000),
-  isAnonymous: z.boolean().optional(),
 });
 
 export const POST: APIRoute = async ({ request }) => {
@@ -22,10 +23,11 @@ export const POST: APIRoute = async ({ request }) => {
 
     await sanityWriteClient.create({
       _type: "prayerRequest",
-      submitterName: data.isAnonymous ? undefined : (data.submitterName ?? undefined),
-      submitterEmail: data.isAnonymous ? undefined : (data.submitterEmail || undefined),
+      submitterName: data.submitterName,
+      submitterEmail: data.submitterEmail || undefined,
+      submitterPhone: data.submitterPhone,
+      submitterPlace: data.submitterPlace,
       prayerRequestText: data.prayerRequestText,
-      isAnonymous: data.isAnonymous ?? false,
       dateSubmitted: new Date().toISOString(),
       isPrayed: false,
     });

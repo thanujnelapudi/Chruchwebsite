@@ -34,7 +34,7 @@ export default function GalleryView({ images }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
 
       {/* Hero Section */}
       <section className="py-24 px-6 bg-primary">
