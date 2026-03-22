@@ -29,6 +29,7 @@ export const serviceSchedule = defineType({
       name: "location",
       title: "Location",
       type: "string",
+      description: 'Where the service is held (e.g., Main Sanctuary, Online)',
       initialValue: "The Pillar of Fire Ministries",
     }),
     defineField({

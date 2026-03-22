@@ -42,96 +42,15 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
   const [pastorSectionOpen, setPastorSectionOpen] = useState(false);
   const [signatureError, setSignatureError] = useState(false);
 
-  type Phase = 'initial' | 'countdown' | 'reveal' | 'site';
-  // -------------------------------------------------------------------------
-  // ⚙️ TO ENABLE FULL LAUNCH OR REVEAL: set this to 'initial'
-  // ⚙️ TO DISABLE EVERYTHING COMPLETELY: set this to 'site'
-  // -------------------------------------------------------------------------
-  const [phase, setPhase] = useState<Phase>('initial');
-  const [isVideoReady, setIsVideoReady] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-
-  // Monitor DOM video readyState so we ONLY let the user launch when the huge video is buffered
   useEffect(() => {
-    const video = curtainVideoRef.current;
-    if (video) {
-      if (video.readyState >= 3) {
-        setIsVideoReady(true);
-      } else {
-        const handleReady = () => setIsVideoReady(true);
-        video.addEventListener('canplaythrough', handleReady);
-        video.addEventListener('loadeddata', handleReady);
-        
-        // Safety timeout so user is never permanently stuck if internet is very slow
-        const safetyFallback = setTimeout(() => setIsVideoReady(true), 6000);
-        return () => {
-          video.removeEventListener('canplaythrough', handleReady);
-          video.removeEventListener('loadeddata', handleReady);
-          clearTimeout(safetyFallback);
-        };
+    // Only play the background video (clouds)
+    const timer = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play().catch((e) => console.warn("Video play failed", e));
       }
-    }
+    }, 200);
+    return () => clearTimeout(timer);
   }, []);
-
-  const [countdownSeconds, setCountdownSeconds] = useState(10);
-
-  // Run the countdown timer when the manual Launch button is clicked. Trigger hardware video play strictly at 0.
-  useEffect(() => {
-    if (phase !== 'countdown') return;
-
-    if (countdownSeconds <= 0) {
-      if (curtainVideoRef.current && isVideoReady) {
-         curtainVideoRef.current.play().catch(e => { console.warn("Autoplay blocked", e); setPhase('reveal'); });
-      }
-      return;
-    }
-
-    const interval = setInterval(() => {
-      setCountdownSeconds(prev => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          if (curtainVideoRef.current && isVideoReady) {
-             curtainVideoRef.current.play().catch(e => { console.warn("Autoplay blocked", e); setPhase('reveal'); });
-          }
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [phase, countdownSeconds, isVideoReady]);
-
-  // Listen for actual frame painting to guarantee the logo and CSS don't reveal too early
-  useEffect(() => {
-    const video = curtainVideoRef.current;
-    if (!video) return;
-    const handlePlaying = () => {
-      // The exact millisecond the browser hardware pushes the first video frame, drop the preloader and sync the Logo!
-      setPhase('reveal'); 
-    };
-    video.addEventListener('playing', handlePlaying);
-    return () => video.removeEventListener('playing', handlePlaying);
-  }, []);
-
-  // Trigger curtain video exactly when the reveal phase starts
-  useEffect(() => {
-    if (phase === 'reveal' && curtainVideoRef.current) {
-      curtainVideoRef.current.play().catch(e => console.warn("Curtain video play failed", e));
-    }
-  }, [phase]);
-
-  useEffect(() => {
-    // Only play the background video (clouds) if we've passed the countdown phase completely
-    if (phase !== 'initial' && phase !== 'countdown') {
-      const timer = setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.play().catch((e) => console.warn("Video play failed", e));
-        }
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [phase]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -159,130 +78,6 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
   return (
     <LazyMotion features={domAnimation}>
 
-      {/* ── INITIAL LAUNCH BUTTON OR COUNTDOWN OVERLAY ───────────────────────── */}
-      {/* ── INITIAL LAUNCH BUTTON OR COUNTDOWN OVERLAY ───────────────────────── */}
-      {(phase === 'initial' || (phase === 'countdown' && !isVideoPlaying)) && (
-        <div className="fixed inset-0 z-[120] flex flex-col items-center justify-center bg-[#0B1221] overflow-hidden pointer-events-auto transition-opacity duration-300">
-          {/* Subtle background glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(192,168,125,0.1)_0%,_transparent_60%)] pointer-events-none" />
-
-          <m.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="relative z-10 flex flex-col items-center px-6"
-          >
-            <h2 
-              className="text-white mb-6 text-center uppercase drop-shadow-[0_4px_24px_rgba(0,0,0,0.4)] flex flex-col items-center"
-              style={{ fontFamily: "'Cinzel', serif", fontWeight: 600, letterSpacing: '0.12em', lineHeight: 1.2 }}
-            >
-              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-balance">
-                The Pillar of Fire Ministries
-              </span>
-            </h2>
-            <span className="text-[#C0A87D] font-paragraph text-sm md:text-base uppercase tracking-[0.4em] font-semibold mb-12 drop-shadow-md">
-                Pastor K. Andrew
-            </span>
-
-            {/* Launch Action Area */}
-            <div className="flex items-center justify-center min-h-[160px]">
-              {phase === 'initial' ? (
-                <button
-                  onClick={() => isVideoReady && setPhase('countdown')}
-                  className={`bg-transparent border border-[#C0A87D]/50 text-white font-heading text-xl md:text-2xl tracking-widest uppercase px-12 py-5 md:py-6 rounded-full shadow-[0_0_30px_rgba(192,168,125,0.15)] transition-all duration-500 backdrop-blur-md relative overflow-hidden group ${
-                    isVideoReady 
-                    ? 'hover:border-[#C0A87D] hover:bg-[#C0A87D]/10 hover:shadow-[0_0_50px_rgba(192,168,125,0.3)] hover:-translate-y-1' 
-                    : 'opacity-50 cursor-wait'
-                  }`}
-                >
-                  <span className="relative z-10">{isVideoReady ? 'Launch Website' : 'Preloading...'}</span>
-                  {isVideoReady && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C0A87D]/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none" />}
-                </button>
-              ) : (
-                <div className="flex flex-col items-center">
-                  <m.span
-                    key={countdownSeconds} // Re-animate on number change
-                    initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    className="font-heading text-[8rem] md:text-[12rem] leading-none text-white font-bold drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] tracking-tighter"
-                  >
-                    {countdownSeconds === 0 ? "Starting..." : countdownSeconds}
-                  </m.span>
-                  <m.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-[#C0A87D] font-paragraph text-sm md:text-base uppercase tracking-[0.5em] font-semibold mt-8 drop-shadow-md">
-                    Seconds
-                  </m.span>
-                </div>
-              )}
-            </div>
-            <p className="text-white/40 font-paragraph tracking-[0.3em] uppercase mt-20 text-xs md:text-sm">
-              {phase === 'initial' ? 'Website Launch Mode' : 'Preparing to Launch'}
-            </p>
-          </m.div>
-        </div>
-      )}
-
-      {/* ── 3D VIDEO CURTAIN REVEAL OVERLAY ───────────────────────── */}
-      {/* We mount this during 'initial' and 'countdown' too so the heavy 59MB mp4 preloads perfectly in the background without lag! */}
-      {(phase === 'initial' || phase === 'countdown' || phase === 'reveal') && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-transparent pointer-events-none">
-
-          {/* SVG Green Screen Keying Filter with extreme precision to wipe out green grain */}
-          <svg width="0" height="0" className="absolute pointer-events-none">
-            <defs>
-              <filter id="green-screen" colorInterpolationFilters="sRGB">
-                {/* 1. Extract a mask strictly penalizing Green.
-                      A = 1*R - 2*G + 1*B + 0.1 
-                      This causes any greenish-grey grain to instantly plunge below 0 (transparent).
-                      Pure whites and greys balance out to 0, which gets lifted to +0.1 (opaque). */}
-                <feColorMatrix in="SourceGraphic" type="matrix" values="
-                   0 0 0 0 0
-                   0 0 0 0 0
-                   0 0 0 0 0
-                   1 -1 1 0 0.1
-                 " result="maskAlpha" />
-
-                {/* 2. Soft threshold.
-                      slope=5 turns the small positive offset (+0.1) of whites/shadows into full opacity.
-                      Negative values (the green background) stay transparent. */}
-                <feComponentTransfer in="maskHighContrast" result="maskHighContrast">
-                  <feFuncA type="linear" slope="5" intercept="0" />
-                </feComponentTransfer>
-
-                {/* 3. Minimal blur to keep edges crisp but not pixelated */}
-                <feGaussianBlur in="maskHighContrast" stdDeviation="0.8" result="maskBlurred" />
-
-                {/* 4. Mask the original crisp video through the smoothed green-screen mask */}
-                <feComposite in="SourceGraphic" in2="maskBlurred" operator="in" />
-              </filter>
-            </defs>
-          </svg>
-
-          {/* The Video (Preloaded silently, played manually from the ref) */}
-          <video
-            ref={curtainVideoRef}
-            src="/videos/curtain.mp4"
-            muted
-            playsInline
-            preload="auto"
-            onEnded={() => setPhase('site')}
-            onError={() => setPhase('site')}
-            style={{ filter: 'url(#green-screen)' }}
-            className={`absolute inset-0 w-full h-full object-cover pointer-events-auto ${phase === 'reveal' ? 'opacity-100' : 'opacity-0'}`}
-          />
-
-          {/* Welcome Logo Container */}
-          {phase === 'reveal' && (
-            <m.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: [0, 1, 1, 0], scale: [0.9, 1, 1.02, 1.05] }}
-              transition={{ duration: 2, times: [0, 0.3, 0.6, 1], ease: "easeInOut" }}
-              className="absolute inset-0 z-[110] flex items-center justify-center pointer-events-none"
-            >
-              {/* Church Logo isolated and enlarged */}
-              <img src="/images/watermark.png" alt="Church Logo" className="w-[320px] md:w-[420px] lg:w-[520px] object-contain drop-shadow-[0_10px_30px_rgba(255,255,255,0.7)]" />
-            </m.div>
-          )}
-        </div>
-      )}
 
       <div className="min-h-screen bg-[#0B1221] overflow-x-hidden selection:bg-highlight-hover selection:text-primary">
         <style>{`
@@ -607,7 +402,7 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
                     />
                   )}
                   <p className="font-paragraph text-slate-400 text-xs tracking-[0.2em] uppercase font-semibold">
-                    — The Pillar Of Fire Ministries
+                    — The Pillar of Fire Ministries
                   </p>
                 </m.div>
               </m.div>
