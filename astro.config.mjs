@@ -6,7 +6,7 @@ import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://pillar-of-fire-ministries.vercel.app",
+  site: "https://thepillaroffireministries.vercel.app",
   output: "static",
   adapter: vercel({ webAnalytics: { enabled: false } }),
   integrations: [tailwind(), react(), sitemap()],
