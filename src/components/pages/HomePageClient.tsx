@@ -580,7 +580,7 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
                   {/* Premium Editorial Quote Styling with Gold Vertical Anchor */}
                   <p className="font-serif italic font-light text-slate-700 leading-[2.1] text-[1.2rem] relative z-10 pl-6 border-l-[3px] border-[#C0A87D]/50">
                     By the grace of God, I, Pastor K. Andrew, an anointed servant of God, established "The Pillar of Fire Ministries" in obedience to His divine calling, for the advancement of His Kingdom and the proclamation of His truth. The Lord led me to establish
-                    "The Pillar of Cloud Tabernacle" at Hyderabad in India—an end-time message church,birthed through earnest prayer, unwavering faith, and my complete obedience to His calling.
+                    "The Pillar of Fire Ministries" at Hyderabad in India—an end-time message church,birthed through earnest prayer, unwavering faith, and my complete obedience to His calling.
 
                   </p>
                 </m.div>
@@ -607,7 +607,7 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
                     />
                   )}
                   <p className="font-paragraph text-slate-400 text-xs tracking-[0.2em] uppercase font-semibold">
-                    — The Pillar Of Cloud Tabernacle
+                    — The Pillar Of Fire Ministries
                   </p>
                 </m.div>
               </m.div>
