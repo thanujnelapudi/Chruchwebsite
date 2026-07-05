@@ -239,8 +239,8 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
 
         {/* ── 3. DAILY QUOTE — CMS-driven with fallback ──────────────────────────────── */}
         {(() => {
-          const displayVerseText = dailyVerse?.verseText || "The LORD is my shepherd; I shall not want.";
-          const displayVerseRef = dailyVerse?.verseReference || "Psalm 23:1";
+          const displayVerseText = dailyVerse?.verseText || (!dailyVerse && !dailyVerse?.verseImageUrl ? "The LORD is my shepherd; I shall not want." : null);
+          const displayVerseRef = dailyVerse?.verseReference || (!dailyVerse && !dailyVerse?.verseImageUrl ? "Psalm 23:1" : null);
           const displayImageUrl = dailyVerse?.verseImageUrl;
           const hasText = !!displayVerseText;
 
@@ -447,7 +447,6 @@ export default function HomePageClient({ latestSermon, events, songs, dailyVerse
               {/* The SmartLivePlayer dynamically defaults to LIVE or LATEST SERMON with polling */}
               <SmartLivePlayer
                 fallbackVideoId={latestSermon?.youtubeVideoId}
-                fallbackTitle={latestSermon?.title || 'Latest Sermon'}
                 className="w-full max-w-2xl"
               />
             </div>

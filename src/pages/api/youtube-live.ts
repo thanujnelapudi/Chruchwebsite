@@ -53,11 +53,12 @@ export const GET: APIRoute = async () => {
                 if (Array.isArray(obj)) {
                     for (const item of obj) findVideos(item);
                 } else if (typeof obj === 'object') {
-                    if (obj.videoId && obj.title && obj.title.runs && obj.title.runs.length > 0) {
+                    const renderer = obj.gridVideoRenderer || obj.videoRenderer;
+                    if (renderer && renderer.videoId && renderer.title && renderer.title.runs && renderer.title.runs.length > 0) {
                         results.push({
-                            id: obj.videoId,
-                            title: obj.title.runs[0].text,
-                            published: obj.publishedTimeText ? obj.publishedTimeText.simpleText : ''
+                            id: renderer.videoId,
+                            title: renderer.title.runs[0].text,
+                            published: renderer.publishedTimeText ? renderer.publishedTimeText.simpleText : ''
                         });
                     } else {
                         for (const key in obj) {

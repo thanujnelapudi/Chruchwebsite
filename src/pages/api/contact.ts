@@ -12,7 +12,7 @@ import { z } from "zod";
 const schema = z.object({
   name: z.string().min(1).max(120),
   email: z.string().email().optional().or(z.literal('')),
-  phone: z.string().min(1).max(20),
+  phone: z.string().regex(/^[0-9+\-\s()]+$/, "Phone must contain only numbers and standard symbols").min(7).max(20),
   location: z.string().min(1).max(200),
   subject: z.string().max(200).optional(),
   message: z.string().min(5).max(5000),

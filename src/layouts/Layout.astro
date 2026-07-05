@@ -52,7 +52,19 @@ const fullTitle  = title ? `${title} | ${siteTitle}` : "The Pillar of Cloud Tabe
 
     <link rel="icon"             type="image/png" href="/icons/favicon.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="application-name" content="The Pillar Of Cloud Tabernacle" />
+    <meta name="apple-mobile-web-app-title" content="The Pillar Of Cloud Tabernacle" />
     <meta name="theme-color" content="#1E3A8A" />
+
+    {/* WebSite Structured Data for Google Site Name Branding */}
+    {Astro.url.pathname === '/' && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "The Pillar Of Cloud Tabernacle",
+        "url": "https://thepillaroffireministries.vercel.app/"
+      })} />
+    )}
 
     {/* Preload High-Priority Hero Background Assets to Prevent Flicker */}
     {Astro.url.pathname === '/' && (

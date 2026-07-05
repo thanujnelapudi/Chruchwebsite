@@ -54,7 +54,7 @@ export interface Sermon {
   title: string;
   speaker: string;
   date: string;
-  topic?: string;
+
   category?: string;
   tags?: string[];
   series?: string;
@@ -146,7 +146,7 @@ const SERMON_FIELDS = `
   speaker,
   date,
   category,
-  topic,
+
   tags,
   series,
   seriesPart,
@@ -313,19 +313,11 @@ export async function getGallery(limit?: number): Promise<GalleryItem[]> {
 
 // ── Daily Verse ───────────────────────────────────────────────────────────────
 
-/** Fetch today's verse from Sanity. Quotes expire after 3 days, falling back to local storage. */
+/** Fetch the most recent verse from Sanity so it is always displayed. */
 export async function getTodayVerse(): Promise<DailyVerse | null> {
-  const todayDate = new Date();
-  const today = todayDate.toISOString().split("T")[0];
-  
-  const threeDaysAgoDate = new Date(todayDate);
-  threeDaysAgoDate.setDate(todayDate.getDate() - 3);
-  const threeDaysAgo = threeDaysAgoDate.toISOString().split("T")[0];
-
   return sanityClient.fetch(
-    `*[_type == "dailyVerse" && date <= $today && date >= $threeDaysAgo] | order(date desc)[0] {
+    `*[_type == "dailyVerse"] | order(date desc)[0] {
       _id, date, verseText, verseReference, verseImage, language
-    }`,
-    { today, threeDaysAgo }
+    }`
   );
 }

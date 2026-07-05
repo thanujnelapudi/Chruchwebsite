@@ -11,7 +11,7 @@ import { z } from "zod";
 const schema = z.object({
   submitterName: z.string().min(1).max(120),
   submitterEmail: z.string().email().optional().or(z.literal("")),
-  submitterPhone: z.string().min(5).max(30),
+  submitterPhone: z.string().regex(/^[0-9+\-\s()]+$/, "Phone must contain only numbers and standard symbols").min(7).max(30),
   submitterPlace: z.string().min(1).max(120),
   prayerRequestText: z.string().min(5).max(5000),
 });

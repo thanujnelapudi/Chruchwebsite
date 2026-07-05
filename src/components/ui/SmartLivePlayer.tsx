@@ -7,14 +7,12 @@ interface SmartLivePlayerProps {
    * Pass latestSermon to provide fallback data.
    */
   fallbackVideoId?: string;
-  fallbackTitle?: string;
   className?: string;
   theme?: 'light' | 'dark';
 }
 
 export default function SmartLivePlayer({
   fallbackVideoId,
-  fallbackTitle = 'Latest Sermon',
   className = '',
   theme = 'light'
 }: SmartLivePlayerProps) {
@@ -72,15 +70,6 @@ export default function SmartLivePlayer({
   return (
     <div className={`flex flex-col w-full ${className}`}>
       
-      {/* Status Badge header */}
-      <div className="flex items-center justify-between mb-4 px-1">
-        <div className="flex items-center gap-3">
-          <span className={`font-heading text-lg tracking-wide ${theme === 'dark' ? 'text-white' : 'text-primary'}`}>
-            {fallbackTitle}
-          </span>
-        </div>
-      </div>
-
       {/* Video Player */}
       <div className={`relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border ${theme === 'dark' ? 'border-white/10' : 'border-primary/10'}`}>
         {activeVideoId ? (
@@ -88,7 +77,7 @@ export default function SmartLivePlayer({
             <iframe
               key={activeVideoId} // Forces iframe to reload only if the ID strictly rotates
               src={`https://www.youtube.com/embed/${activeVideoId}?autoplay=1`}
-              title={fallbackTitle}
+              title="Video Player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
               className="absolute top-0 left-0 w-full h-full border-0 bg-black"

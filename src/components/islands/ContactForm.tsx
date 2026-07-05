@@ -81,6 +81,8 @@ export default function ContactForm() {
             <Input
               id="phone"
               type="tel"
+              pattern="^[0-9+\-\s()]{7,20}$"
+              title="Please enter a valid phone number (at least 7 numbers/symbols)"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               required
@@ -98,6 +100,8 @@ export default function ContactForm() {
             <Input
               id="email"
               type="email"
+              pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+              title="Please enter a valid email address"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full bg-white/90 backdrop-blur-none border border-white/30 rounded-xl focus:border-primary/50 focus:ring-primary/20 transition-all shadow-inner text-foreground relative z-10"

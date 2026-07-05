@@ -17,7 +17,6 @@ interface Sermon {
   title: string;
   speaker?: string;
   date?: string;
-  topic?: string;
   category?: string;
   tags?: string[];
   series?: string;
@@ -29,7 +28,6 @@ interface Sermon {
 
 interface Props {
   sermons: Sermon[];
-  topics: string[];
   allSeries: string[];
 }
 
@@ -40,21 +38,18 @@ const getYouTubeId = (url: string) => {
   return (match && match[1].length === 11) ? match[1] : url;
 };
 
-export default function SermonsView({ sermons, topics, allSeries }: Props) {
+export default function SermonsView({ sermons, allSeries }: Props) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<string>('');
-  const [selectedTopic, setTopic] = useState('');
   const [selectedSeries, setSeries] = useState('');
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfTitle, setPdfTitle] = useState('');
-  const [topicOpen, setTopicOpen] = useState(false);
   const [seriesOpen, setSeriesOpen] = useState(false);
 
   const fuse = useMemo(() => new Fuse(sermons, {
     keys: [
       { name: 'title', weight: 3 },
       { name: 'speaker', weight: 2 },
-      { name: 'topic', weight: 2 },
       { name: 'tags', weight: 1.5 },
       { name: 'series', weight: 1 },
       { name: 'description', weight: 1 },
@@ -66,21 +61,19 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
   const filtered = useMemo(() => {
     let r = query.trim() ? fuse.search(query).map(x => x.item) : [...sermons];
     if (category) r = r.filter(s => s.category === category);
-    if (selectedTopic) r = r.filter(s => s.topic === selectedTopic);
     if (selectedSeries) r = r.filter(s => s.series === selectedSeries);
     return r;
-  }, [query, category, selectedTopic, selectedSeries, fuse, sermons]);
+  }, [query, category, selectedSeries, fuse, sermons]);
 
   const pillRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (pillRef.current && !pillRef.current.contains(e.target as Node)) {
-        setTopicOpen(false);
         setSeriesOpen(false);
       }
     };
-    if (topicOpen || seriesOpen) {
+    if (seriesOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
     }
@@ -88,10 +81,10 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [topicOpen, seriesOpen]);
+  }, [seriesOpen]);
 
-  const clearAll = () => { setQuery(''); setTopic(''); setSeries(''); };
-  const hasFilters = query || selectedTopic || selectedSeries;
+  const clearAll = () => { setQuery(''); setSeries(''); };
+  const hasFilters = query || selectedSeries;
 
   return (
     <div className="min-h-screen bg-[#0A1428] text-[#FDFBF7] overflow-x-hidden relative font-paragraph selection:bg-[#C0A87D]/30 selection:text-[#FDFBF7]">
@@ -174,59 +167,15 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
                 />
               </div>
 
-              {(topics.length > 0 || allSeries.length > 0) && (
+              {allSeries.length > 0 && (
                 <div className="w-px h-6 bg-white/10 mx-1 md:mx-2 shrink-0" />
               )}
 
               <div className="flex items-center justify-center gap-0.5 md:gap-2 shrink-0 px-1 md:px-0">
-                {topics.length > 0 && (
-                  <div className="relative">
-                    <button 
-                      onClick={() => { setTopicOpen(!topicOpen); setSeriesOpen(false); }}
-                      className="group w-8 h-8 md:w-[38px] md:h-[38px] flex items-center justify-center rounded-full hover:bg-white/5 transition-colors focus:outline-none" 
-                      title="Filter by Topic"
-                    >
-                      <Tag className={`w-4 h-4 md:w-[18px] md:h-[18px] transition-colors ${selectedTopic ? 'text-[#C0A87D]' : 'text-[#FDFBF7]/30 group-hover:text-[#FDFBF7]/60'}`} />
-                    </button>
-                    <AnimatePresence>
-                      {topicOpen && (
-                        <>
-                          <motion.div 
-                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute top-full right-0 md:right-auto md:left-1/2 md:-translate-x-1/2 mt-3 w-56 bg-[#0A1428]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_15px_40px_rgba(0,0,0,0.6)] z-50 overflow-hidden py-2 px-1"
-                          >
-                            <button 
-                              onClick={() => { setTopic(''); setTopicOpen(false); }} 
-                              className={`w-full text-left px-4 py-2.5 text-sm font-paragraph rounded-md transition-colors ${selectedTopic === '' ? 'text-[#C0A87D] bg-white/5' : 'text-[#FDFBF7]/70 hover:text-[#FDFBF7] hover:bg-white/5'}`}
-                            >
-                              All Topics
-                            </button>
-                            <div className="w-full h-px bg-white/5 my-1" />
-                            <div className="max-h-60 overflow-y-auto">
-                              {topics.map(t => (
-                                <button 
-                                  key={t} 
-                                  onClick={() => { setTopic(t); setTopicOpen(false); }} 
-                                  className={`w-full text-left px-4 py-2 text-sm font-paragraph rounded-md transition-colors ${selectedTopic === t ? 'text-[#C0A87D] bg-white/5' : 'text-[#FDFBF7]/70 hover:text-[#FDFBF7] hover:bg-white/5'}`}
-                                >
-                                  {t}
-                                </button>
-                              ))}
-                            </div>
-                          </motion.div>
-                        </>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                )}
-
                 {allSeries.length > 0 && (
                   <div className="relative">
                     <button 
-                      onClick={() => { setSeriesOpen(!seriesOpen); setTopicOpen(false); }}
+                      onClick={() => { setSeriesOpen(!seriesOpen); }}
                       className="group w-8 h-8 md:w-[38px] md:h-[38px] flex items-center justify-center rounded-full hover:bg-white/5 transition-colors focus:outline-none" 
                       title="Filter by Series"
                     >
@@ -303,6 +252,11 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
                     <h3 className="font-heading text-2xl lg:text-[28px] text-[#FDFBF7] leading-[1.3] tracking-wide font-light group-hover:text-[#C0A87D] transition-colors duration-500">
                       {filtered[0].title}
                     </h3>
+                    {filtered[0].series && (
+                      <p className="text-[#C0A87D] font-paragraph text-xs mt-1 uppercase tracking-widest">
+                        {filtered[0].series}{filtered[0].seriesPart ? ` - Part ${filtered[0].seriesPart}` : ''}
+                      </p>
+                    )}
                     
                     <div className="flex flex-wrap items-center gap-4 text-[#FDFBF7]/80 font-light tracking-wide mb-1 text-[13px]">
                       {filtered[0].category && (
@@ -316,9 +270,9 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
                       </div>
                       
                       {filtered[0].date && (
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-3.5 h-3.5 text-[#C0A87D]/70" />
-                          <span>{new Date(filtered[0].date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <div className="flex items-center gap-2 text-[#FDFBF7] font-semibold">
+                          <Calendar className="w-4 h-4 text-[#C0A87D]" />
+                          <span className="text-sm tracking-wide">{new Date(filtered[0].date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         </div>
                       )}
                     </div>
@@ -366,15 +320,15 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
                             </span>
                           )}
                           <h3 className="font-heading text-lg lg:text-[22px] text-[#FDFBF7] mb-3 leading-[1.3] tracking-wide font-normal group-hover:text-[#C0A87D] transition-colors">{sermon.title}</h3>
+                          {sermon.series && (
+                            <p className="text-[#C0A87D] font-paragraph text-xs mt-1 uppercase tracking-widest mb-3">
+                              {sermon.series}{sermon.seriesPart ? ` - Part ${sermon.seriesPart}` : ''}
+                            </p>
+                          )}
                           
                           {/* 90% White Readability Fix */}
                           <div className="flex flex-col gap-1.5 text-xs text-[#FDFBF7]/90 font-light tracking-wide border-t border-white/[0.04] pt-4 mt-2">
                             {sermon.speaker && <span className="uppercase tracking-widest text-[#FDFBF7]/80 flex items-center gap-2"><User className="w-[12px] h-[12px] text-[#C0A87D]/70" /> {sermon.speaker}</span>}
-                            {sermon.topic && (
-                              <span className="flex items-center gap-2 italic text-[#FDFBF7]/70">
-                                <span className="w-1 h-1 rounded-full bg-[#C0A87D]/50" /> {sermon.topic}
-                              </span>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -386,9 +340,9 @@ export default function SermonsView({ sermons, topics, allSeries }: Props) {
                       )}
 
                       {sermon.date && (
-                        <div className="flex items-center text-[#FDFBF7]/70 mb-5 border-t border-white/[0.04] pt-4 mt-auto">
-                          <Calendar className="w-[12px] h-[12px] mr-2 text-[#C0A87D]/60" />
-                          <span className="font-paragraph text-[10px] tracking-[0.1em] uppercase font-light">
+                        <div className="flex items-center text-[#FDFBF7] mb-5 border-t border-white/[0.04] pt-4 mt-auto font-semibold">
+                          <Calendar className="w-3.5 h-3.5 mr-2 text-[#C0A87D]" />
+                          <span className="font-paragraph text-xs md:text-[13px] tracking-wide">
                             {new Date(sermon.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
                           </span>
                         </div>

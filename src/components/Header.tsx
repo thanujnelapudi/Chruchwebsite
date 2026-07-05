@@ -73,21 +73,23 @@ export default function Header() {
         ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}
       `}
     >
-      <div className={`max-w-[120rem] mx-auto px-6 transition-all duration-300 ${isScrolled ? "py-3" : "py-5"}`}>
-        <div className="flex items-center justify-between">
+      <div className={`max-w-[85rem] mx-auto px-6 transition-all duration-300 ${isScrolled ? "py-2" : "py-3"}`}>
+        <div className="flex items-center justify-between w-full">
 
           {/* Brand Name — Cinzel font, fits within header */}
-          <a href="/" className="flex items-center flex-shrink min-w-0 transition-opacity hover:opacity-80">
-            <span
-              className="text-sm sm:text-base md:text-lg lg:text-xl text-white leading-none tracking-[0.02em]"
-              style={{ fontFamily: "'Cinzel', serif", fontWeight: 600 }}
-            >
-              {design.brand.name}
-            </span>
-          </a>
+          <div className="flex-shrink-0">
+            <a href="/" className="flex items-center transition-opacity hover:opacity-80">
+              <span
+                className="text-xl sm:text-2xl md:text-3xl text-white leading-none tracking-[0.05em] font-bold"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
+                {design.brand.name}
+              </span>
+            </a>
+          </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-4 lg:space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6 lg:space-x-8 mx-auto">
 
             {/* 1. Service Schedule */}
             {navLinks.filter(l => l.name === "Service Schedule").map((link) => (
@@ -95,7 +97,7 @@ export default function Header() {
                 key={link.path}
                 href={link.path}
                 className={`
-                  font-paragraph text-sm transition-colors relative group py-1
+                  font-paragraph text-sm transition-colors relative group py-1 whitespace-nowrap
                   ${isActive(link.path)
                     ? "text-white font-medium"
                     : "text-white/80 hover:text-white"
@@ -116,7 +118,7 @@ export default function Header() {
             <div className="relative group flex items-center h-full">
               <button
                 className={`
-                  font-paragraph text-sm transition-colors relative flex items-center gap-1 py-1
+                  font-paragraph text-sm transition-colors relative flex items-center gap-1 py-1 whitespace-nowrap
                   ${isResourcesActive
                     ? "text-white font-medium"
                     : "text-white/80 hover:text-white"
@@ -134,14 +136,14 @@ export default function Header() {
               </button>
 
               {/* Dropdown panel — visible on hover */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50">
                 <div className="bg-[rgba(20,40,80,0.8)] backdrop-blur-[20px] border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)] min-w-[200px] rounded-sm overflow-hidden py-1">
                   {resourcesLinks.map((sub) => (
                     <a
                       key={sub.path}
                       href={sub.path}
                       className={`
-                        block font-paragraph text-sm px-6 py-3 transition-colors
+                        block font-paragraph text-sm px-6 py-3 transition-colors whitespace-nowrap
                         ${isActive(sub.path)
                           ? "text-white bg-white/10 font-semibold"
                           : "text-white/80 hover:text-white hover:bg-white/5"
@@ -161,7 +163,7 @@ export default function Header() {
                 key={link.path}
                 href={link.path}
                 className={`
-                  font-paragraph text-sm transition-colors relative group py-1
+                  font-paragraph text-sm transition-colors relative group py-1 whitespace-nowrap
                   ${isActive(link.path)
                     ? "text-white font-medium"
                     : "text-white/80 hover:text-white"
@@ -181,14 +183,14 @@ export default function Header() {
           </nav>
 
           {/* Right controls */}
-          <div className="flex items-center space-x-4 lg:space-x-6">
+          <div className="flex-shrink-0 flex items-center space-x-4 lg:space-x-6">
 
             {/* Watch Live CTA */}
             <a href="/watch-live" className="hidden md:flex items-center">
               <div className="relative inline-flex group">
                 <div className="absolute -inset-0.5 bg-secondary/30 blur-sm rounded-full animate-pulse opacity-70 group-hover:opacity-0 transition-opacity duration-300"></div>
-                <Button className="relative bg-secondary hover:bg-secondary/90 text-white rounded-[9999px] h-10 px-6 font-medium tracking-wide transition-all duration-300 ease-out hover:-translate-y-[2px] hover:scale-[1.04] shadow-[0_4px_12px_rgba(0,0,0,0.25)] hover:shadow-[0_6px_16px_rgba(212,175,55,0.3)]">
-                  <Play className="mr-2 h-4 w-4 fill-current" />
+                <Button className="relative bg-secondary hover:bg-secondary/90 text-white rounded-[9999px] h-9 px-5 text-xs font-semibold tracking-wider transition-all duration-300 ease-out hover:-translate-y-[2px] hover:scale-[1.04] shadow-[0_4px_12px_rgba(0,0,0,0.25)] hover:shadow-[0_6px_16px_rgba(212,175,55,0.3)]">
+                  <Play className="mr-1.5 h-3.5 w-3.5 fill-current" />
                   WATCH LIVE
                 </Button>
               </div>

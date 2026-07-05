@@ -88,7 +88,6 @@ export default function WatchLiveView({ channelId, recentSermons }: Props) {
                 <div className="w-full bg-black/50 p-4 md:p-8 lg:p-10 pb-6 border-b border-white/5 shadow-inner">
                   <SmartLivePlayer
                     fallbackVideoId={fallbackSermon?.youtubeVideoId}
-                    fallbackTitle={fallbackSermon?.title || 'Recent Service'}
                     className="w-full"
                     theme="dark"
                   />

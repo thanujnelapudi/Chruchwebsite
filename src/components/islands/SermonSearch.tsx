@@ -15,15 +15,15 @@ import { PDFViewerModal } from "@/components/islands/PDFViewerModal";
 
 interface Props {
   sermons: Sermon[];
-  topics: string[];
+
   allSeries: string[];
 }
 
 const ITEMS_PER_PAGE = 12;
 
-export default function SermonSearch({ sermons, topics, allSeries }: Props) {
+export default function SermonSearch({ sermons, allSeries }: Props) {
   const [query, setQuery] = useState("");
-  const [selectedTopic, setSelectedTopic] = useState("");
+
   const [selectedSeries, setSelectedSeries] = useState("");
   const [page, setPage] = useState(1);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -37,7 +37,6 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
         keys: [
           { name: "title", weight: 3 },
           { name: "speaker", weight: 2 },
-          { name: "topic", weight: 2 },
           { name: "tags", weight: 1.5 },
           { name: "series", weight: 1 },
           { name: "description", weight: 1 },
@@ -54,14 +53,11 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
       ? fuse.search(query).map((r) => r.item)
       : [...sermons];
 
-    if (selectedTopic) {
-      results = results.filter((s) => s.topic === selectedTopic);
-    }
     if (selectedSeries) {
       results = results.filter((s) => s.series === selectedSeries);
     }
     return results;
-  }, [query, selectedTopic, selectedSeries, fuse, sermons]);
+  }, [query, selectedSeries, fuse, sermons]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginated = filtered.slice(0, page * ITEMS_PER_PAGE);
@@ -69,12 +65,11 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
 
   const clearFilters = useCallback(() => {
     setQuery("");
-    setSelectedTopic("");
     setSelectedSeries("");
     setPage(1);
   }, []);
 
-  const hasActiveFilters = query || selectedTopic || selectedSeries;
+  const hasActiveFilters = query || selectedSeries;
 
   function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString("en-IN", {
@@ -120,28 +115,17 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`sm:hidden flex items-center gap-2 px-4 py-2.5 border font-paragraph text-sm transition-colors ${
-                showFilters || selectedTopic || selectedSeries
+                showFilters || selectedSeries
                   ? "border-primary bg-primary text-white"
                   : "border-primary/20 text-foreground/70"
               }`}
             >
               <Filter className="w-4 h-4" />
-              Filters {(selectedTopic || selectedSeries) ? "(active)" : ""}
+              Filters {selectedSeries ? "(active)" : ""}
             </button>
 
             {/* Desktop filters */}
             <div className="hidden sm:flex gap-3">
-              <select
-                value={selectedTopic}
-                onChange={(e) => { setSelectedTopic(e.target.value); setPage(1); }}
-                className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm focus:outline-none focus:border-primary min-w-[160px]"
-              >
-                <option value="">All Topics</option>
-                {topics.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-
               <select
                 value={selectedSeries}
                 onChange={(e) => { setSelectedSeries(e.target.value); setPage(1); }}
@@ -167,14 +151,6 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
           {/* Mobile filter drawer */}
           {showFilters && (
             <div className="sm:hidden mt-3 flex flex-col gap-3">
-              <select
-                value={selectedTopic}
-                onChange={(e) => { setSelectedTopic(e.target.value); setPage(1); }}
-                className="px-3 py-2.5 border border-primary/20 bg-white text-foreground font-paragraph text-sm w-full focus:outline-none"
-              >
-                <option value="">All Topics</option>
-                {topics.map((t) => <option key={t} value={t}>{t}</option>)}
-              </select>
               <select
                 value={selectedSeries}
                 onChange={(e) => { setSelectedSeries(e.target.value); setPage(1); }}
@@ -252,12 +228,6 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                         </div>
                       </div>
                     )}
-                    {sermon.series && (
-                      <div className="absolute top-3 left-3 bg-primary/90 text-white font-paragraph text-xs px-2.5 py-1">
-                        {sermon.series}
-                        {sermon.seriesPart ? ` · Part ${sermon.seriesPart}` : ""}
-                      </div>
-                    )}
                   </div>
 
                   {/* Content */}
@@ -271,6 +241,11 @@ export default function SermonSearch({ sermons, topics, allSeries }: Props) {
                       <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
                         {sermon.title}
                       </h3>
+                      {sermon.series && (
+                        <p className="text-secondary font-paragraph text-xs uppercase tracking-widest mb-3">
+                          {sermon.series}{sermon.seriesPart ? ` - Part ${sermon.seriesPart}` : ''}
+                        </p>
+                      )}
                       {sermon.speaker && (
                         <p className="font-paragraph text-sm text-foreground/70 mb-3">
                           {sermon.speaker}

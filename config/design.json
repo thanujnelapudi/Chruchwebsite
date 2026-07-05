@@ -2,8 +2,8 @@
   "_comment": "Central design config. Update image paths here to change visuals site-wide.",
 
   "brand": {
-    "name": "The Pillar Of Cloud Tabernacle",
-    "shortName": "TPCT",
+    "name": "TPFM",
+    "shortName": "TPFM",
     "tagline": "The Lord went before them by day in a pillar of cloud.",
     "taglineReference": "Exodus 13:21",
     "email": "thepillarofcloudtabernacle@gmail.com",

@@ -89,6 +89,8 @@ export default function PrayerForm() {
             <Input
               id="phone"
               type="tel"
+              pattern="^[0-9+\-\s()]{7,30}$"
+              title="Please enter a valid phone number (at least 7 numbers/symbols)"
               required
               value={form.submitterPhone}
               onChange={(e) => setForm({ ...form, submitterPhone: e.target.value })}
@@ -106,6 +108,8 @@ export default function PrayerForm() {
             <Input
               id="email"
               type="email"
+              pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+              title="Please enter a valid email address"
               value={form.submitterEmail}
               onChange={(e) => setForm({ ...form, submitterEmail: e.target.value })}
               className="w-full bg-white/[0.08] backdrop-blur-[10px] border border-white/[0.15] rounded-xl focus:border-[#C0A87D] transition-all duration-300 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] text-white placeholder:text-white/50 relative z-10 h-14 px-5 font-light focus:bg-white/[0.12]"

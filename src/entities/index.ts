@@ -87,7 +87,7 @@ export interface Resources {
   // Bonus sermon fields passed through
   speaker?: string;
   youtubeVideoId?: string;
-  topic?: string;
+
   tags?: string[];
   series?: string;
 }

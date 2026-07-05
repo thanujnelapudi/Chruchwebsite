@@ -52,8 +52,7 @@ const formattedDate = sermon.date
       <div class="mb-10">
         {sermon.series && (
           <p class="font-paragraph text-sm text-secondary uppercase tracking-widest mb-4">
-            {sermon.series}
-            {sermon.seriesPart ? ` — Part ${sermon.seriesPart}` : ""}
+            {sermon.series}{sermon.seriesPart ? ` - Part ${sermon.seriesPart}` : ""}
           </p>
         )}
         <h1 class="font-heading text-4xl md:text-5xl text-primary mb-6">
@@ -70,12 +69,6 @@ const formattedDate = sermon.date
             <span class="flex items-center gap-2">
               <Calendar class="w-4 h-4" />
               {formattedDate}
-            </span>
-          )}
-          {sermon.topic && (
-            <span class="flex items-center gap-2">
-              <Tag class="w-4 h-4" />
-              {sermon.topic}
             </span>
           )}
         </div>

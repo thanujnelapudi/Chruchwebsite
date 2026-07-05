@@ -48,6 +48,8 @@ export function Head({
       {/* Favicon */}
       <link rel="icon" type="image/png" href="/icons/favicon.png" />
       <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+      <meta name="application-name" content={siteTitle} />
+      <meta name="apple-mobile-web-app-title" content={siteTitle} />
 
       {/* Theme colour (matches primary brand blue) */}
       <meta name="theme-color" content={design.colors.primary} />
