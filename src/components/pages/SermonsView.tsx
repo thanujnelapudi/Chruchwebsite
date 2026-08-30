@@ -32,6 +32,7 @@ interface SourceItem {
   fileType: 'pdf' | 'image' | 'docx' | 'other';
   fileUrl: string;
   caption?: string;
+  relatedSermons?: Array<{ _id: string; title: string }>;
   relatedSermon?: { _id: string; title: string } | null;
 }
 
@@ -73,7 +74,13 @@ export default function SermonsView({ sermons, allSeries, sources = [] }: Props)
   const sourcesBySermon = useMemo(() => {
     const map: Record<string, SourceItem[]> = {};
     for (const s of sources) {
-      if (s.relatedSermon?._id) {
+      if (s.relatedSermons && s.relatedSermons.length > 0) {
+        for (const sermonRef of s.relatedSermons) {
+          if (sermonRef?._id) {
+            (map[sermonRef._id] ??= []).push(s);
+          }
+        }
+      } else if (s.relatedSermon?._id) {
         (map[s.relatedSermon._id] ??= []).push(s);
       }
     }

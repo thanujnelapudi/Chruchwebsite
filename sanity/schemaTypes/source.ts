@@ -36,12 +36,17 @@ export const source = defineType({
                 Rule.required().uri({ allowRelative: false, scheme: ["https"] }),
         }),
         defineField({
-            name: "relatedSermon",
-            title: "Related Sermon",
-            type: "reference",
-            to: [{ type: "sermon" }],
+            name: "relatedSermons",
+            title: "Related Sermons",
+            type: "array",
+            of: [
+                {
+                    type: "reference",
+                    to: [{ type: "sermon" }],
+                },
+            ],
             description:
-                "Leave empty for standalone material (general awareness content not tied to a specific sermon). Set this to have the item also appear on that sermon's page.",
+                "Select one or more sermons where this source was used. Leave empty for standalone material (general awareness content not tied to a specific sermon).",
         }),
         defineField({
             name: "category",
@@ -78,13 +83,17 @@ export const source = defineType({
             title: "title",
             fileType: "fileType",
             category: "category",
-            sermonTitle: "relatedSermon.title",
+            sermon0: "relatedSermons.0.title",
+            sermon1: "relatedSermons.1.title",
+            legacySermon: "relatedSermon.title",
         },
-        prepare({ title, fileType, category, sermonTitle }) {
+        prepare({ title, fileType, category, sermon0, sermon1, legacySermon }) {
+            const firstSermon = sermon0 || legacySermon;
+            const extra = sermon1 ? " (+more)" : "";
             return {
                 title,
-                subtitle: sermonTitle
-                    ? `${fileType?.toUpperCase() ?? ""} · Linked to: ${sermonTitle}`
+                subtitle: firstSermon
+                    ? `${fileType?.toUpperCase() ?? ""} · Linked to: ${firstSermon}${extra}`
                     : `${fileType?.toUpperCase() ?? ""} · ${category ?? "Standalone"}`,
             };
         },

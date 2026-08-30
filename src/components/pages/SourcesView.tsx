@@ -25,6 +25,7 @@ interface Source {
     title: string;
     fileType: "pdf" | "image" | "docx" | "other";
     fileUrl: string;
+    relatedSermons?: Array<{ _id: string; title: string }>;
     relatedSermon?: { _id: string; title: string } | null;
     category?: string;
     caption?: string;
@@ -62,6 +63,7 @@ export default function SourcesView({ sources }: Props) {
                 keys: [
                     { name: "title", weight: 3 },
                     { name: "caption", weight: 1.5 },
+                    { name: "relatedSermons.title", weight: 1 },
                     { name: "relatedSermon.title", weight: 1 },
                     { name: "category", weight: 1 },
                 ],
@@ -73,8 +75,8 @@ export default function SourcesView({ sources }: Props) {
 
     const filtered = useMemo(() => {
         let r = query.trim() ? fuse.search(query).map((x) => x.item) : [...sources];
-        if (scope === "linked") r = r.filter((s) => !!s.relatedSermon);
-        if (scope === "standalone") r = r.filter((s) => !s.relatedSermon);
+        if (scope === "linked") r = r.filter((s) => (s.relatedSermons && s.relatedSermons.length > 0) || !!s.relatedSermon);
+        if (scope === "standalone") r = r.filter((s) => (!s.relatedSermons || s.relatedSermons.length === 0) && !s.relatedSermon);
         if (category) r = r.filter((s) => s.category === category);
         return r.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
     }, [query, scope, category, fuse, sources]);
@@ -226,7 +228,20 @@ export default function SourcesView({ sources }: Props) {
                                             )}
 
                                             <div className="mt-auto pt-2 flex flex-col gap-2">
-                                                {s.relatedSermon ? (
+                                                {s.relatedSermons && s.relatedSermons.length > 0 ? (
+                                                    <div className="flex flex-wrap gap-1.5 items-center">
+                                                        {s.relatedSermons.map((sermon) => (
+                                                            <a
+                                                                key={sermon._id}
+                                                                href={`/sermons/${sermon._id}`}
+                                                                className="inline-flex items-center gap-1 text-xs text-[#C0A87D] hover:underline bg-[#C0A87D]/10 hover:bg-[#C0A87D]/20 px-2 py-0.5 rounded transition-colors"
+                                                            >
+                                                                <BookOpen className="w-3 h-3 shrink-0" />
+                                                                <span className="truncate max-w-[200px]">{sermon.title}</span>
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                ) : s.relatedSermon ? (
                                                     <a
                                                         href={`/sermons/${s.relatedSermon._id}`}
                                                         className="inline-flex items-center gap-1.5 text-xs text-[#C0A87D] hover:underline w-fit"

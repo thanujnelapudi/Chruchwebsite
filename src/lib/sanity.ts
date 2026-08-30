@@ -124,6 +124,7 @@ export interface Source {
   title: string;
   fileType: "pdf" | "image" | "docx" | "other";
   fileUrl: string;
+  relatedSermons?: Array<{ _id: string; title: string }>;
   relatedSermon?: { _id: string; title: string } | null;
   category?: string;
   caption?: string;
@@ -255,7 +256,11 @@ const SOURCE_FIELDS = `
   category,
   caption,
   date,
-  relatedSermon -> { _id, title }
+  "relatedSermons": select(
+    defined(relatedSermons) => relatedSermons[]->{ _id, title },
+    defined(relatedSermon) => [relatedSermon->{ _id, title }],
+    []
+  )
 `;
 
 // ── Sources ───────────────────────────────────────────────────────────────────
@@ -270,14 +275,14 @@ export async function getSources(): Promise<Source[]> {
 /** Fetch only standalone sources (no related sermon) — general awareness material. */
 export async function getStandaloneSources(): Promise<Source[]> {
   return sanityClient.fetch(
-    `*[_type == "source" && !defined(relatedSermon)] | order(date desc) { ${SOURCE_FIELDS} }`
+    `*[_type == "source" && (!defined(relatedSermons) || count(relatedSermons) == 0) && !defined(relatedSermon)] | order(date desc) { ${SOURCE_FIELDS} }`
   );
 }
 
 /** Fetch the sources linked to one specific sermon, for display on that sermon's page. */
 export async function getSourcesForSermon(sermonId: string): Promise<Source[]> {
   return sanityClient.fetch(
-    `*[_type == "source" && relatedSermon._ref == $sermonId] | order(date desc) { ${SOURCE_FIELDS} }`,
+    `*[_type == "source" && ($sermonId in relatedSermons[]._ref || relatedSermon._ref == $sermonId)] | order(date desc) { ${SOURCE_FIELDS} }`,
     { sermonId }
   );
 }
