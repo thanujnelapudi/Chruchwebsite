@@ -125,7 +125,7 @@ export default function SourcesView({ sources }: Props) {
                             S O U R C E S
                         </h1>
                         <p className="font-paragraph text-sm md:text-base text-[#FDFBF7]/70 max-w-2xl mx-auto font-light leading-[1.8] tracking-widest uppercase">
-                            What the pastor has used or displayed — to support a message, or to raise awareness.
+                            Access to the sources, pdfs and illustrations
                         </p>
                     </motion.div>
 
@@ -139,8 +139,8 @@ export default function SourcesView({ sources }: Props) {
                                 key={s}
                                 onClick={() => setScope(s)}
                                 className={`flex items-center justify-center py-2 md:py-2.5 px-4 md:px-6 rounded-full text-[11px] md:text-[13px] uppercase tracking-widest font-medium transition-all border whitespace-nowrap ${scope === s
-                                        ? "bg-[#C0A87D]/15 text-[#C0A87D] border-[#C0A87D]/30 shadow-sm"
-                                        : "border-transparent text-[#FDFBF7]/50 hover:text-[#FDFBF7]/80 hover:bg-white/5"
+                                    ? "bg-[#C0A87D]/15 text-[#C0A87D] border-[#C0A87D]/30 shadow-sm"
+                                    : "border-transparent text-[#FDFBF7]/50 hover:text-[#FDFBF7]/80 hover:bg-white/5"
                                     }`}
                             >
                                 {s === "all" ? "All" : s === "linked" ? "Linked to a Sermon" : "Standalone"}
