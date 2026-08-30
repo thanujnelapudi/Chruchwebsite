@@ -179,10 +179,10 @@ export default function SermonsView({ sermons, allSeries, sources = [] }: Props)
     }
 
     return (
-      <div className="relative z-50" onClick={(e) => e.stopPropagation()}>
+      <div className={`relative ${isFeatured ? 'w-auto' : 'flex-1'} z-50`} onClick={(e) => e.stopPropagation()}>
         <button
           onClick={() => setNotesMenuFor(notesMenuFor === sermon._id ? null : sermon._id)}
-          className={btnClass}
+          className={`${btnClass} w-full`}
         >
           <BookOpen className={iconClass} /> Notes <ChevronDown className={`${iconClass} transition-transform ${notesMenuFor === sermon._id ? 'rotate-180' : ''}`} />
         </button>
@@ -193,7 +193,7 @@ export default function SermonsView({ sermons, allSeries, sources = [] }: Props)
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className={`absolute bottom-full mb-2 ${isFeatured ? 'left-0' : 'right-0'} w-56 bg-[#0A1428] border border-[#C0A87D]/30 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md overflow-hidden py-1.5 z-50`}
+              className={`absolute bottom-full mb-2 ${isFeatured ? 'max-sm:right-0 sm:left-0' : 'right-0'} w-56 max-w-[calc(100vw-3rem)] bg-[#0A1428] border border-[#C0A87D]/30 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-md overflow-hidden py-1.5 z-50`}
             >
               <button
                 onClick={() => { setPdfUrl(sermon.pdfUrl!); setPdfTitle(sermon.title); setNotesMenuFor(null); }}
