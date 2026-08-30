@@ -20,6 +20,7 @@ const navLinks = [
 const resourcesLinks = [
   { name: "Sermons", path: "/sermons" },
   { name: "Songs", path: "/songs" },
+  { name: "Sources", path: "/sources" },
 ];
 
 export default function Header() {

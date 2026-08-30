@@ -1,0 +1,14 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SourcesView from "@/components/pages/SourcesView";
+import { getSources } from "@/lib/sanity";
+
+const sources = await getSources().catch(() => []);
+---
+
+<Layout
+    title="Sources"
+    description="PDFs, images, and documents the pastor has used or displayed — to support a sermon or to raise awareness on a topic."
+>
+    <SourcesView sources={sources} client:load />
+</Layout>

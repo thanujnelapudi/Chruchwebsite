@@ -119,6 +119,17 @@ export interface GalleryItem {
   dateTaken?: string;
 }
 
+export interface Source {
+  _id: string;
+  title: string;
+  fileType: "pdf" | "image" | "docx" | "other";
+  fileUrl: string;
+  relatedSermon?: { _id: string; title: string } | null;
+  category?: string;
+  caption?: string;
+  date?: string;
+}
+
 export interface DailyVerse {
   _id: string;
   date: string;
@@ -234,6 +245,41 @@ export async function getSermonSeries(): Promise<string[]> {
     `*[_type == "sermon" && defined(series)] { series }`
   );
   return [...new Set(results.map((r) => r.series).filter(Boolean))].sort();
+}
+
+const SOURCE_FIELDS = `
+  _id,
+  title,
+  fileType,
+  fileUrl,
+  category,
+  caption,
+  date,
+  relatedSermon -> { _id, title }
+`;
+
+// ── Sources ───────────────────────────────────────────────────────────────────
+
+/** Fetch all sources (linked + standalone), newest first. For the /sources library page. */
+export async function getSources(): Promise<Source[]> {
+  return sanityClient.fetch(
+    `*[_type == "source"] | order(date desc) { ${SOURCE_FIELDS} }`
+  );
+}
+
+/** Fetch only standalone sources (no related sermon) — general awareness material. */
+export async function getStandaloneSources(): Promise<Source[]> {
+  return sanityClient.fetch(
+    `*[_type == "source" && !defined(relatedSermon)] | order(date desc) { ${SOURCE_FIELDS} }`
+  );
+}
+
+/** Fetch the sources linked to one specific sermon, for display on that sermon's page. */
+export async function getSourcesForSermon(sermonId: string): Promise<Source[]> {
+  return sanityClient.fetch(
+    `*[_type == "source" && relatedSermon._ref == $sermonId] | order(date desc) { ${SOURCE_FIELDS} }`,
+    { sermonId }
+  );
 }
 
 // ── Songs ─────────────────────────────────────────────────────────────────────

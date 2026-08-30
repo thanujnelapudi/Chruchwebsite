@@ -7,6 +7,7 @@ import { gallery } from "./gallery";
 import { dailyVerse } from "./dailyVerse";
 import { prayerRequest } from "./prayerRequest";
 import { contactMessage } from "./contactMessage";
+import { source } from "./source";
 
 export const schemaTypes = [
   sermon,
@@ -18,4 +19,5 @@ export const schemaTypes = [
   dailyVerse,
   prayerRequest,
   contactMessage,
+  source,
 ];

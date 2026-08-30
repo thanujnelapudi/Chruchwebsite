@@ -25,6 +25,7 @@ export default defineConfig({
             S.divider(),
             S.listItem().title("Prayer Requests").schemaType("prayerRequest").child(S.documentTypeList("prayerRequest").title("Prayer Requests")),
             S.listItem().title("Contact Messages").schemaType("contactMessage").child(S.documentTypeList("contactMessage").title("Contact Messages")),
+            S.listItem().title("Sources").schemaType("source").child(S.documentTypeList("source").title("Sources")),
           ]),
     }),
     visionTool(),

@@ -1,8 +1,9 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { getSermonById, getSermons, sanityImage } from "@/lib/sanity";
+import { getSermonById, getSermons, getSourcesForSermon, sanityImage } from "@/lib/sanity";
+import type { Source } from "@/lib/sanity";
 import { PDFViewerModal } from "@/components/islands/PDFViewerModal";
-import { ArrowLeft, Calendar, User, Tag, BookOpen, Play, Download } from "lucide-react";
+import { ArrowLeft, Calendar, User, Tag, BookOpen, Play, Download, FileText, Image as ImageIcon, File as FileIcon } from "lucide-react";
 
 export async function getStaticPaths() {
   const sermons = await getSermons();
@@ -15,6 +16,9 @@ const sermon = await getSermonById(id);
 if (!sermon) {
   return Astro.redirect("/sermons", 301);
 }
+
+const supportingSources: Source[] = await getSourcesForSermon(sermon._id).catch(() => []);
+const SOURCE_ICON = { pdf: FileText, image: ImageIcon, docx: FileIcon, other: FileIcon } as const;
 
 const thumbnailUrl = sermon.thumbnailImage
   ? sanityImage(sermon.thumbnailImage).width(1200).url()
@@ -132,6 +136,34 @@ const formattedDate = sermon.date
               <Download class="w-4 h-4" />
               Download
             </a>
+          </div>
+        </div>
+      )}
+
+      <!-- Supporting sources: images/PDFs the pastor used or displayed alongside this sermon -->
+      {supportingSources.length > 0 && (
+        <div class="mb-10">
+          <p class="font-heading text-lg text-primary mb-4">Supporting Sources</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {supportingSources.map((s) => {
+              const Icon = SOURCE_ICON[s.fileType] ?? FileIcon;
+              return (
+                <a
+                  href={s.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-start gap-3 p-4 bg-primary/5 border border-primary/10 hover:border-primary/30 transition-colors"
+                >
+                  <Icon class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p class="font-paragraph text-sm text-primary">{s.title}</p>
+                    {s.caption && (
+                      <p class="font-paragraph text-xs text-foreground/60 mt-1">{s.caption}</p>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
