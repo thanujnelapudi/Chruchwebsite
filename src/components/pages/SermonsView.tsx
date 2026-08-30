@@ -193,7 +193,7 @@ export default function SermonsView({ sermons, allSeries, sources = [] }: Props)
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="absolute bottom-full mb-2 left-0 w-56 bg-[#0A1428] border border-[#C0A87D]/25 rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.6)] overflow-hidden py-1.5 z-50"
+              className={`absolute bottom-full mb-2 ${isFeatured ? 'left-0' : 'right-0'} w-56 bg-[#0A1428] border border-[#C0A87D]/30 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md overflow-hidden py-1.5 z-50`}
             >
               <button
                 onClick={() => { setPdfUrl(sermon.pdfUrl!); setPdfTitle(sermon.title); setNotesMenuFor(null); }}
@@ -367,7 +367,7 @@ export default function SermonsView({ sermons, allSeries, sources = [] }: Props)
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-8">
                 {/* UX Fix 2: Featured Sermon Layout (Visual Hierarchy) */}
                 {!hasFilters && filtered.length > 0 && (
-                  <div className="md:col-span-2 lg:col-span-2 xl:col-span-2 group bg-white/[0.03] border border-white/[0.06] hover:border-[#C0A87D]/30 transition-all duration-500 p-6 lg:p-8 rounded-[12px] shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-sm relative flex flex-col items-start gap-4">
+                  <div className={`md:col-span-2 lg:col-span-2 xl:col-span-2 group bg-white/[0.03] border border-white/[0.06] hover:border-[#C0A87D]/30 transition-all duration-500 p-6 lg:p-8 rounded-[12px] shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-sm relative flex flex-col items-start gap-4 ${notesMenuFor === filtered[0]._id ? 'z-40' : 'z-10'}`}>
                     {/* Premium Top Glow */}
                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C0A87D]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -427,7 +427,7 @@ export default function SermonsView({ sermons, allSeries, sources = [] }: Props)
                 {(hasFilters ? filtered : filtered.slice(1)).map((sermon) => (
                   <div
                     key={sermon._id}
-                    className="group bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/[0.05] p-6 lg:p-8 hover:border-[#C0A87D]/30 transition-all flex flex-col rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-sm relative min-h-[220px]"
+                    className={`group bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/[0.05] p-6 lg:p-8 hover:border-[#C0A87D]/30 transition-all flex flex-col rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-sm relative min-h-[220px] ${notesMenuFor === sermon._id ? 'z-40' : 'z-10'}`}
                   >
                     {/* Subtle hover edge */}
                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C0A87D]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
