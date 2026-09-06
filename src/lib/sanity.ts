@@ -21,7 +21,7 @@ export const sanityClient = createClient({
   projectId: import.meta.env.SANITY_PROJECT_ID ?? process.env.SANITY_PROJECT_ID ?? "",
   dataset: import.meta.env.SANITY_DATASET ?? process.env.SANITY_DATASET ?? "production",
   apiVersion: "2024-01-01",
-  useCdn: true, // cached responses — fine for read-only public data
+  useCdn: import.meta.env.PROD ?? false, // bypass CDN cache in development for instant updates
   token: import.meta.env.SANITY_API_TOKEN ?? process.env.SANITY_API_TOKEN ?? "",
 });
 
